@@ -5,6 +5,9 @@
 #include <iostream>
 #include <sstream>
 
+unsigned int RowsCounted = 0;
+char info[20];
+
 void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
@@ -206,28 +209,32 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_1_1:
-         Amount_water(initialise.get_w());
+         unsigned int temp_water = initialise.get_w();
+         Amount_water(&temp_water);
          NextState = S_WAIT_FOR_INPUT;
          break;
       case S_DETECTED_1_2:
-         Amount_Plant_Food(&initialise.choosen_AmountPlantFood);
+         unsigned int temp_food = initialise.get_f();
+         Amount_Plant_Food(&temp_food);
          NextState = S_WAIT_FOR_INPUT;
          break;
       case S_DETECTED_1_3:
-         Row(&initialise.Selected_Row);
+         unsigned int temp_row = initialise.get_r();
+         Row(&temp_row);
          NextState = S_WAIT_FOR_INPUT;
          break;
       case S_DETECTED_1_4:
-         Sprinkler_Speed(&initialise.Speed);
+         unsigned int temp_speed = initialise.get_s();
+         Sprinkler_Speed(&temp_speed);
          NextState = S_WAIT_FOR_INPUT;
          break;
       case S_DETECTED_1_5:
-         DSP_ShowSettings(&initialise);
+         initialise.print_values();
          NextState = S_WAIT_FOR_INPUT;
          break;
          //--------------------------From here the running state is described----------------------------------------------------
       case S_RUN_INITIALISE:
-         if((initialise.choosen_AmountWater==0)|(initialise.Selected_Row == 0))
+         if((initialise.get_w()==0)|(initialise.get_r() == 0))
          {
             //error security check build in here
             DSP_ShowDebug("Cannot run with current settings\n");
@@ -236,7 +243,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          else
          {
             DSP_ShowInfo("Running with following settings:\n\n");
-            DSP_ShowSettings(&initialise);
+            initialise.print_values();
             Event = E_MOTOR1_RUN_FORWARDS;
             DSP_ShowInfo("Motor 1 is running forwards\n\n");
             Event = E_ROW_DETECTED;
@@ -250,12 +257,12 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                NextState = S_DETECTED_ROW;
                break;
             case E_MOTOR2_RUN_FORWARDS:
-               sprintf(info, "Motor2 running with PWM %d\n", initialise.Speed);
+               sprintf(info, "Motor2 running with PWM %d\n", initialise.get_s());
                DSP_ShowInfo(info);
                Event = E_SPRINKLER_ON;
-               sprintf(info, "Watersprinkler is %d%% open\n", initialise.choosen_AmountWater);
+               sprintf(info, "Watersprinkler is %d%% open\n", initialise.get_w());
                DSP_ShowInfo(info);
-               sprintf(info, "Foodsprinkler is %d%% open\n\n", initialise.choosen_AmountPlantFood);
+               sprintf(info, "Foodsprinkler is %d%% open\n\n", initialise.get_f());
                DSP_ShowInfo(info);
                Event = E_WALL_DETECTED;
                NextState = S_RUN;
@@ -280,10 +287,10 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_DETECTED_ROW:
-         if(RowsCounted < initialise.Selected_Row)
+         if(RowsCounted < initialise.get_r())
          {
             RowsCounted++;
-            if(RowsCounted == initialise.Selected_Row)
+            if(RowsCounted == initialise.get_r())
             {
                sprintf(info, "Row %d detected\n\n", RowsCounted);
                DSP_ShowInfo(info);
@@ -292,10 +299,10 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             {
                sprintf(info, "Row %d detected\n", RowsCounted);
                DSP_ShowInfo(info);
-            }unsigned
+            }
                   NextState = S_RUN;
          }
-         else if(RowsCounted == initialise.Selected_Row)
+         else if(RowsCounted == initialise.get_r())
          {
             Event = E_MOTOR1_STOP;
             sprintf(info, "Motor1 stopped\n");

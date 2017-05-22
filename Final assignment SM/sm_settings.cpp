@@ -41,5 +41,3 @@ void SM_settings::print_values(){
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
 }
 
-SM_settings Lantana;
-

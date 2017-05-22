@@ -49,7 +49,7 @@ class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog),
-      currentState(S_INITIALISED), money(0.0), priceCoke(125) {}
+      currentState(S_START), money(0.0), priceCoke(125) {}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
