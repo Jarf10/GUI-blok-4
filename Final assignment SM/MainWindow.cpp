@@ -77,10 +77,10 @@ void MainWindow::enableCentButtons(bool enable) {
    }
 }
 
-void MainWindow::setDisplay(const QString &text) {
+/*void MainWindow::setDisplay(const QString &text) {
    display->setText(text);
    display->update();
-}
+}*/
 
 void MainWindow::setLogger(const QString &text) {
    logDisplay->moveCursor(QTextCursor::End);
@@ -169,13 +169,13 @@ void MainWindow::createGridGroupBox()
    label->setPixmap(*image);
    layout->addWidget(label, 0, 0);
 
-   display = new QTextEdit(this);
+   /*display = new QTextEdit(this);
    display->setReadOnly(true);
    display->setTextColor(QColor(0,0,0));
    display->setFontPointSize(30);
    display->setFixedSize(500, 50);
    display->setOverwriteMode(true);
-   layout->addWidget(display, 0, 1, 1, 5);
+   layout->addWidget(display, 0, 1, 1, 5);*/
 
    layout->setColumnStretch(1, 10);
    layout->setColumnStretch(2, 20);

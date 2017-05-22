@@ -29,7 +29,7 @@ event_e StateMachine::statemachine(event_e eventIn) {
       case S_INIT:
          pDialog->setLogger("-state: Init");
          money = 0.0;
-         pDialog->setDisplay("Enter your coins please");
+         //pDialog->setDisplay("Enter your coins please");
          pDialog->enableCentButtons(true);
          nextState = S_WAIT_FOR_COINS;
          eventOut = E_NO;  // Go waiting for external events: event driven
