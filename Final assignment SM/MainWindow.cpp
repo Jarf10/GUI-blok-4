@@ -106,12 +106,12 @@ void MainWindow::createHorizontalGroupBoxes()
    buttons[0] = new QPushButton(tr("1"));
    buttons[0]->setStyleSheet("background-color: lightblue;");
    layout1->addWidget(buttons[0], 0, 0);
-   connect(buttons[0], SIGNAL(released()), this, SLOT(coin5C()));
+   connect(buttons[0], SIGNAL(released()), this, SLOT(button1()));
 
    buttons[1] = new QPushButton(tr("2"));
    buttons[1]->setStyleSheet("background-color: purple;");
    layout1->addWidget(buttons[1], 0, 1);
-   connect(buttons[1], SIGNAL(released()), this, SLOT(coin10C()));
+   connect(buttons[1], SIGNAL(released()), this, SLOT(button2()));
 
    buttons[2] = new QPushButton(tr("3"));
    buttons[2]->setStyleSheet("color: blue;"
@@ -119,32 +119,35 @@ void MainWindow::createHorizontalGroupBoxes()
                              "selection-color: yellow;"
                              "selection-background-color: blue;");
    layout1->addWidget(buttons[2], 0 , 2);
-   connect(buttons[2], SIGNAL(released()), this, SLOT(coin20C()));
+   connect(buttons[2], SIGNAL(released()), this, SLOT(button3()));
 
    buttons[3] = new QPushButton(tr("4"));
    layout1->addWidget(buttons[3]);
-   connect(buttons[3], SIGNAL(released()), this, SLOT(coin50C()));
+   connect(buttons[3], SIGNAL(released()), this, SLOT(button4()));
 
    buttons[4] = new QPushButton(tr("5"));
    layout1->addWidget(buttons[4]);
-   connect(buttons[4], SIGNAL(released()), this, SLOT(coin100C()));
+   connect(buttons[4], SIGNAL(released()), this, SLOT(button5()));
 
    buttons[5] = new QPushButton(tr("6"));
    layout1->addWidget(buttons[5]);
-   connect(buttons[5], SIGNAL(released()), this, SLOT(Trash_coin()));
+   connect(buttons[5], SIGNAL(released()), this, SLOT(button6()));
 
    buttons[6] = new QPushButton(tr("7"));
    layout1->addWidget(buttons[6]);
-   connect(buttons[6], SIGNAL(released()), this, SLOT(Return_coin()));
+   connect(buttons[6], SIGNAL(released()), this, SLOT(button7()));
 
    buttons[7] = new QPushButton(tr("8"));
    layout1->addWidget(buttons[7]);
+   connect(buttons[7], SIGNAL(released()), this, SLOT(button8()));
 
    buttons[8] = new QPushButton(tr("9"));
    layout1->addWidget(buttons[8]);
+   connect(buttons[8], SIGNAL(released()), this, SLOT(button9()));
 
    buttons[9] = new QPushButton(tr("0"));
    layout1->addWidget(buttons[9], 4, 1);
+   connect(buttons[9], SIGNAL(released()), this, SLOT(button0()));
 
    enableCentButtons(false);
    horizontalGroupBox1->setLayout(layout1);
@@ -183,37 +186,52 @@ void MainWindow::createGridGroupBox()
 }
 
 //----------------------------------------------------------- GUI event handlers
-void MainWindow::coin5C()
+void MainWindow::button0()
 {
-   pStateMachine->handleEvent(E_IN5C);
+   pStateMachine->handleEvent(E_PRESSED_0);
 }
 
-void MainWindow::coin10C()
+void MainWindow::button1()
 {
-   pStateMachine->handleEvent(E_IN10C);
+   pStateMachine->handleEvent(E_PRESSED_1);
 }
 
-void MainWindow::coin20C()
+void MainWindow::button2()
 {
-   pStateMachine->handleEvent(E_IN20C);
+   pStateMachine->handleEvent(E_PRESSED_2);
 }
 
-void MainWindow::coin50C()
+void MainWindow::button3()
 {
-   pStateMachine->handleEvent(E_IN50C);
+   pStateMachine->handleEvent(E_PRESSED_3);
 }
 
-void MainWindow::coin100C()
+void MainWindow::button4()
 {
-   pStateMachine->handleEvent(E_IN100C);
+   pStateMachine->handleEvent(E_PRESSED_4);
 }
 
-void MainWindow::Trash_coin()
+void MainWindow::button5()
 {
-   pStateMachine->handleEvent(E_INTrashC);
+   pStateMachine->handleEvent(E_PRESSED_5);
 }
 
-void MainWindow::Return_coin()
+void MainWindow::button6()
 {
-   pStateMachine->handleEvent(E_INReturnC);
+   pStateMachine->handleEvent(E_NO);
+}
+
+void MainWindow::button7()
+{
+   pStateMachine->handleEvent(E_NO);
+}
+
+void MainWindow::button8()
+{
+   pStateMachine->handleEvent(E_NO);
+}
+
+void MainWindow::button9()
+{
+   pStateMachine->handleEvent(E_NO);
 }

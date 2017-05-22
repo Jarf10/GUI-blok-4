@@ -92,13 +92,16 @@ private:
    event_e event;
 
 private slots:
-   void coin5C();
-   void coin10C();
-   void coin20C();
-   void coin50C();
-   void coin100C();
-   void Trash_coin();
-   void Return_coin();
+   void button0();
+   void button1();
+   void button2();
+   void button3();
+   void button4();
+   void button5();
+   void button6();
+   void button7();
+   void button8();
+   void button9();
 };
 
 #endif // MAINWINDOW_H
