@@ -1,0 +1,81 @@
+
+Time: Wed May 17 18:52:31 2017
+ -- Display: initialised
+Time: Wed May 17 18:52:31 2017
+ -- Pressure detector: initialised
+Time: Wed May 17 18:52:31 2017
+ -- Food: detected
+Time: Wed May 17 18:52:31 2017
+ -- Row counter: initialised
+Time: Wed May 17 18:52:31 2017
+ -- Motor1: initialised
+Time: Wed May 17 18:52:31 2017
+ -- Motor2: initialised
+
+
+Time: Wed May 17 18:52:31 2017
+ -- Subsystems initialised:
+	Display initialised
+	Pressure detector initialised
+	Food detected
+	Row counter initialised
+	Motor1 initialised
+	Motor2 initialised
+
+
+Time: Wed May 17 19:01:57 2017
+ -- Display: initialised
+Time: Wed May 17 19:01:57 2017
+ -- Pressure detector: initialised
+Time: Wed May 17 19:01:57 2017
+ -- Food: detected
+Time: Wed May 17 19:01:57 2017
+ -- Row counter: initialised
+Time: Wed May 17 19:01:57 2017
+ -- Motor1: initialised
+Time: Wed May 17 19:01:57 2017
+ -- Motor2: initialised
+
+
+Time: Wed May 17 19:01:57 2017
+ -- Subsystems initialised:
+	Display initialised
+	Pressure detector initialised
+	Food detected
+	Row counter initialised
+	Motor1 initialised
+	Motor2 initialised
+
+
+Time: Wed May 17 19:02:08 2017
+ -- Invalid value!
+
+Time: Wed May 17 19:02:26 2017
+ -- Invalid value!
+
+Time: Wed May 17 19:03:01 2017
+ -- Display: initialised
+Time: Wed May 17 19:03:01 2017
+ -- Pressure detector: initialised
+Time: Wed May 17 19:03:01 2017
+ -- Food: detected
+Time: Wed May 17 19:03:01 2017
+ -- Row counter: initialised
+Time: Wed May 17 19:03:01 2017
+ -- Motor1: initialised
+Time: Wed May 17 19:03:01 2017
+ -- Motor2: initialised
+
+
+Time: Wed May 17 19:03:01 2017
+ -- Subsystems initialised:
+	Display initialised
+	Pressure detector initialised
+	Food detected
+	Row counter initialised
+	Motor1 initialised
+	Motor2 initialised
+
+
+Time: Wed May 17 19:03:33 2017
+ -- Cannot run with current settings
