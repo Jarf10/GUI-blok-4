@@ -24,6 +24,8 @@ typedef enum {E_NO,
               E_SPRINKLER_ON, E_SPRINKLER_OFF
              } event_SM;
 
+class MainWindow;
+
 class SM_settings {
 public:
    SM_settings();
@@ -40,15 +42,14 @@ private:
    unsigned int choosen_AmountPlantFood;
    unsigned int Selected_Row;
    unsigned int Speed;
+   MainWindow *pDialog;
 };
-
-class MainWindow;
 
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog),
-      currentState(S_START), money(0.0), priceCoke(125) {}
+      currentState(S_INITIALISED), money(0.0), priceCoke(125) {}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);

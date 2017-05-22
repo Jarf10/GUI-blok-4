@@ -89,7 +89,7 @@ private:
 
    //**************************************************************************
    StateMachine *pStateMachine;
-   event_e event;
+   event_SM event;
 
 private slots:
    void button0();

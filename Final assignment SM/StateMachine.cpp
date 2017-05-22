@@ -5,26 +5,6 @@
 #include <iostream>
 #include <sstream>
 
-SM_settings::SM_settings() : choosen_AmountWater(100), choosen_AmountPlantFood(50),
-   Selected_Row(1), Speed(2){}
-
-void SM_settings::set_values(const unsigned int w, const unsigned int f,
-                const unsigned int r, const unsigned int s){
- choosen_AmountWater = w;
- choosen_AmountPlantFood = f;
- Selected_Row = r;
- Speed = s;
-}
-
-unsigned int SM_settings::get_w(){
-   return choosen_AmountWater;
-}
-
-unsigned int get_f();
-unsigned int get_r();
-unsigned int get_s();
-void print_values();
-
 void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
@@ -33,7 +13,7 @@ void StateMachine::handleEvent(event_SM eventIn) {
 }
 
 event_SM StateMachine::statemachine(event_SM eventIn) {
-   state_SM nextState = S_NO;
+   state_SM NextState = S_NO;
    event_SM eventOut = E_NO;
 
    switch(currentState)
@@ -42,14 +22,16 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          //initialise at the start
          event_SM Event = E_SM_initialise;
          SMinitialise();
-         state_SM NextState = S_INITIALISED;
+         NextState = S_INITIALISED;
          break;
+
       case S_INITIALISED:
-         SM_settings();
-         DSP_ShowSettings(&initialise);
+         SM_settings initialise;
+         initialise.print_values();
          Event = E_READY;
          NextState = S_WAIT_FOR_INPUT;
          break;
+
       case S_WAIT_FOR_INPUT:
          //the start menu will wait for input when it is selected
          DSP_ShowInfo("Make a selection:\n");
@@ -115,7 +97,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                }
                break;
                //----------------------Show current settings--------------------------------------------------------
-            case E_PRESSED_2:DSP_ShowSettings(&initialise);
+            case E_PRESSED_2:
+               initialise.print_values();
                NextState = S_WAIT_FOR_INPUT;
                break;
          }
@@ -125,15 +108,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_0_1:
-         sundeville.choosen_AmountWater = 10;
-         sundeville.choosen_AmountPlantFood = 20;
-         sundeville.Selected_Row = 6;
-         sundeville.Speed = 2;
+         SM_settings Sundeville;
+         Sundeville.set_values(10, 20, 6, 2);
          Event = AreYouSure();
          switch(Event)
          {
             case E_PRESSED_0:
-               initialise = sundeville;
+               initialise = Sundeville;
 
                NextState = S_RUN_INITIALISE;
                break;
@@ -145,16 +126,14 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
-      case S_DETECTED_0_2:
-         lantana.choosen_AmountWater = 80;
-         lantana.choosen_AmountPlantFood = 20;
-         lantana.Selected_Row = 10;
-         lantana.Speed = 1;
+      case S_DETECTED_0_2:         
+         SM_settings Lantana;
+         Lantana.set_values(80, 20, 10, 1);
          Event = AreYouSure();
          switch(Event)
          {
             case E_PRESSED_0:
-               initialise = lantana;
+               initialise = Lantana;
 
                NextState = S_RUN_INITIALISE;
                break;
@@ -167,15 +146,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_DETECTED_0_3:
-         cyclaam.choosen_AmountWater = 70;
-         cyclaam.choosen_AmountPlantFood = 60;
-         cyclaam.Selected_Row = 11;
-         cyclaam.Speed = 1;
+         SM_settings Cyclaam;
+         Cyclaam.set_values(70, 60, 11, 1);
          Event = AreYouSure();
          switch(Event)
          {
             case E_PRESSED_0:
-               initialise = cyclaam;
+               initialise = Cyclaam;
 
                NextState = S_RUN_INITIALISE;
                break;
@@ -188,15 +165,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_DETECTED_0_4:
-         malva.choosen_AmountWater = 40;
-         malva.choosen_AmountPlantFood = 30;
-         malva.Selected_Row = 15;
-         malva.Speed = 1;
+         SM_settings Malva;
+         Malva.set_values(40, 30, 15, 1);
          Event = AreYouSure();
          switch(Event)
          {
             case E_PRESSED_0:
-               initialise = malva;
+               initialise = Malva;
 
                NextState = S_RUN_INITIALISE;
                break;
@@ -209,15 +184,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_DETECTED_0_5:
-         tibouchina.choosen_AmountWater = 80;
-         tibouchina.choosen_AmountPlantFood = 40;
-         tibouchina.Selected_Row = 2;
-         tibouchina.Speed = 1;
+         SM_settings Tibouchina;
+         Tibouchina.set_values(80, 40, 2, 1);
          Event = AreYouSure();
          switch(Event)
          {
             case E_PRESSED_0:
-               initialise = tibouchina;
+               initialise = Tibouchina;
 
                NextState = S_RUN_INITIALISE;
                break;
@@ -233,7 +206,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_1_1:
-         Amount_water(&initialise.choosen_AmountWater);
+         Amount_water(initialise.get_w());
          NextState = S_WAIT_FOR_INPUT;
          break;
       case S_DETECTED_1_2:
@@ -344,17 +317,6 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          NextState = S_WAIT_FOR_INPUT;
          break;
    }
-   currentState = nextState;
+   currentState = NextState;
    return eventOut;
-}
-
-event_SM StateMachine::checkCents(const int cents) {
-   money += cents;
-   if (money >= priceCoke) {
-      stock -= 1;
-      return E_MONEY_ENOUGH;
-   }
-   else {
-      return E_MONEY_NOTENOUGH;
-   }
 }

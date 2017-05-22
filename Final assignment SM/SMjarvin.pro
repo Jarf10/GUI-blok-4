@@ -14,7 +14,9 @@ TEMPLATE = app
 SOURCES += \
     main.cpp\
     MainWindow.cpp \
-    StateMachine.cpp
+    StateMachine.cpp \
+    sm_settings.cpp \
+    ../Sproeier/subsystems_SM.cpp
 
 HEADERS += \
     MainWindow.h \

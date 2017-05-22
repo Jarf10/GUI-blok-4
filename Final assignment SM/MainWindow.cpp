@@ -68,7 +68,7 @@ MainWindow::MainWindow()
 
    setLayout(mainLayout);
    setWindowTitle(tr(APPNAME_VERSION));
-   pStateMachine->handleEvent(E_INIT);
+   pStateMachine->handleEvent(E_SM_initialise);
 }
 
 void MainWindow::enableCentButtons(bool enable) {
