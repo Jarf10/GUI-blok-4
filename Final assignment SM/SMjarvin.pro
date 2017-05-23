@@ -16,7 +16,7 @@ SOURCES += \
     MainWindow.cpp \
     StateMachine.cpp \
     sm_settings.cpp \
-    ../Sproeier/subsystems_SM.cpp
+    subsystems_sm.cpp
 
 HEADERS += \
     MainWindow.h \

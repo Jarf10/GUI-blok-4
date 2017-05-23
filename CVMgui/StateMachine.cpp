@@ -21,6 +21,7 @@ event_e StateMachine::statemachine(event_e eventIn) {
    switch(currentState) {
       case S_START:
          pDialog->setLogger("-state: Start");
+         std::cout << "test";
          stock = 5;
          nextState = S_INIT;
          eventOut = E_SEQ;

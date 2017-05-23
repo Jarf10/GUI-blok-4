@@ -42,7 +42,7 @@ private:
    unsigned int choosen_AmountPlantFood;
    unsigned int Selected_Row;
    unsigned int Speed;
-   MainWindow *pDialog;
+   //MainWindow *pDialog;
 };
 
 class StateMachine {
@@ -58,6 +58,8 @@ public:
 private:
    MainWindow *pDialog;
    state_SM currentState;
+   state_SM NextState;
+   event_SM eventOut;
    int money;
    int stock;
    const int priceCoke;

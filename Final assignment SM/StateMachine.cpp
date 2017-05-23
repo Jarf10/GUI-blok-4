@@ -16,35 +16,36 @@ void StateMachine::handleEvent(event_SM eventIn) {
 }
 
 event_SM StateMachine::statemachine(event_SM eventIn) {
-   state_SM NextState = S_NO;
-   event_SM eventOut = E_NO;
+   NextState = S_NO;
+   eventOut = E_NO;
+   SM_settings initialise;
 
    switch(currentState)
    {
       case S_START:
          //initialise at the start
-         event_SM Event = E_SM_initialise;
+         eventOut = E_SM_initialise;
          SMinitialise();
          NextState = S_INITIALISED;
          break;
-
       case S_INITIALISED:
-         SM_settings initialise;
+      {
          initialise.print_values();
-         Event = E_READY;
+         eventOut = E_READY;
          NextState = S_WAIT_FOR_INPUT;
          break;
-
+      }
       case S_WAIT_FOR_INPUT:
+      {
          //the start menu will wait for input when it is selected
          DSP_ShowInfo("Make a selection:\n");
-         Event = StartMenu();
-         switch(Event)
+         eventOut = StartMenu();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                DSP_ShowInfo("Make a selection:\n");
-               Event = PreSettingsMenu();
-               switch(Event)
+               eventOut = PreSettingsMenu();
+               switch(eventOut)
                {
                   //----------------------presets menu--------------------------------------------------------
                   case E_PRESSED_0:
@@ -70,10 +71,11 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                      break;
                }
                break;
+
             case E_PRESSED_1:
                DSP_ShowInfo("Make a selection:\n");
-               Event = SettingsMenu();
-               switch(Event)
+               eventOut = SettingsMenu();
+               switch(eventOut)
                {
                   //----------------------manual settings menu--------------------------------------------------------
                   case E_PRESSED_0:
@@ -106,15 +108,17 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
+      }
          //----------------------Below are all states of the keys displayed-----------------------------------
       case S_DETECTED_0_0:
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_0_1:
+      {
          SM_settings Sundeville;
          Sundeville.set_values(10, 20, 6, 2);
-         Event = AreYouSure();
-         switch(Event)
+         eventOut = AreYouSure();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                initialise = Sundeville;
@@ -129,11 +133,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
-      case S_DETECTED_0_2:         
+      }
+      case S_DETECTED_0_2:
+      {
          SM_settings Lantana;
          Lantana.set_values(80, 20, 10, 1);
-         Event = AreYouSure();
-         switch(Event)
+         eventOut = AreYouSure();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                initialise = Lantana;
@@ -148,11 +154,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
+      }
       case S_DETECTED_0_3:
+      {
          SM_settings Cyclaam;
          Cyclaam.set_values(70, 60, 11, 1);
-         Event = AreYouSure();
-         switch(Event)
+         eventOut = AreYouSure();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                initialise = Cyclaam;
@@ -167,11 +175,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
+      }
       case S_DETECTED_0_4:
+      {
          SM_settings Malva;
          Malva.set_values(40, 30, 15, 1);
-         Event = AreYouSure();
-         switch(Event)
+         eventOut = AreYouSure();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                initialise = Malva;
@@ -186,11 +196,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
+      }
       case S_DETECTED_0_5:
+      {
          SM_settings Tibouchina;
          Tibouchina.set_values(80, 40, 2, 1);
-         Event = AreYouSure();
-         switch(Event)
+         eventOut = AreYouSure();
+         switch(eventOut)
          {
             case E_PRESSED_0:
                initialise = Tibouchina;
@@ -205,29 +217,38 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
          }
          break;
+      }
       case S_DETECTED_1_0:
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_1_1:
+      {
          unsigned int temp_water = initialise.get_w();
          Amount_water(&temp_water);
          NextState = S_WAIT_FOR_INPUT;
          break;
+      }
       case S_DETECTED_1_2:
+      {
          unsigned int temp_food = initialise.get_f();
          Amount_Plant_Food(&temp_food);
          NextState = S_WAIT_FOR_INPUT;
          break;
+      }
       case S_DETECTED_1_3:
+      {
          unsigned int temp_row = initialise.get_r();
          Row(&temp_row);
          NextState = S_WAIT_FOR_INPUT;
          break;
+      }
       case S_DETECTED_1_4:
+      {
          unsigned int temp_speed = initialise.get_s();
          Sprinkler_Speed(&temp_speed);
          NextState = S_WAIT_FOR_INPUT;
          break;
+      }
       case S_DETECTED_1_5:
          initialise.print_values();
          NextState = S_WAIT_FOR_INPUT;
@@ -244,14 +265,14 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          {
             DSP_ShowInfo("Running with following settings:\n\n");
             initialise.print_values();
-            Event = E_MOTOR1_RUN_FORWARDS;
+            eventOut = E_MOTOR1_RUN_FORWARDS;
             DSP_ShowInfo("Motor 1 is running forwards\n\n");
-            Event = E_ROW_DETECTED;
+            eventOut = E_ROW_DETECTED;
             NextState = S_RUN;
          }
          break;
       case S_RUN:
-         switch(Event)
+         switch(eventOut)
          {
             case E_ROW_DETECTED:
                NextState = S_DETECTED_ROW;
@@ -259,25 +280,25 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             case E_MOTOR2_RUN_FORWARDS:
                sprintf(info, "Motor2 running with PWM %d\n", initialise.get_s());
                DSP_ShowInfo(info);
-               Event = E_SPRINKLER_ON;
+               eventOut = E_SPRINKLER_ON;
                sprintf(info, "Watersprinkler is %d%% open\n", initialise.get_w());
                DSP_ShowInfo(info);
                sprintf(info, "Foodsprinkler is %d%% open\n\n", initialise.get_f());
                DSP_ShowInfo(info);
-               Event = E_WALL_DETECTED;
+               eventOut = E_WALL_DETECTED;
                NextState = S_RUN;
                break;
             case E_WALL_DETECTED:
                DSP_ShowInfo("Wall detected\n");
-               Event = E_MOTOR2_STOP;
+               eventOut = E_MOTOR2_STOP;
                DSP_ShowInfo("Motor2 stopped\n");
-               Event = E_MOTOR2_RUN_BACKWARDS;
+               eventOut = E_MOTOR2_RUN_BACKWARDS;
                DSP_ShowInfo("Motor2 going backwards\n");
-               Event = E_MOTOR2_STOP;
+               eventOut = E_MOTOR2_STOP;
                DSP_ShowInfo("Motor2 stopped\n");
-               Event = E_MOTOR1_RUN_BACKWARDS;
+               eventOut = E_MOTOR1_RUN_BACKWARDS;
                DSP_ShowInfo("Motor1 running backwards\n");
-               Event = E_MOTOR1_STOP;
+               eventOut = E_MOTOR1_STOP;
                DSP_ShowInfo("Motor1 stopped\n\n");
                NextState = S_WAIT_FOR_INPUT;
                break;
@@ -300,14 +321,14 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                sprintf(info, "Row %d detected\n", RowsCounted);
                DSP_ShowInfo(info);
             }
-                  NextState = S_RUN;
+            NextState = S_RUN;
          }
          else if(RowsCounted == initialise.get_r())
          {
-            Event = E_MOTOR1_STOP;
+            eventOut = E_MOTOR1_STOP;
             sprintf(info, "Motor1 stopped\n");
             DSP_ShowInfo(info);
-            Event = E_MOTOR2_RUN_FORWARDS;
+            eventOut = E_MOTOR2_RUN_FORWARDS;
             NextState = S_RUN;
          }
          else
