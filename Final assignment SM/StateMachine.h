@@ -42,14 +42,14 @@ private:
    unsigned int choosen_AmountPlantFood;
    unsigned int Selected_Row;
    unsigned int Speed;
-   //MainWindow *pDialog;
+   MainWindow *pDialog;
 };
 
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog),
-      currentState(S_START), money(0.0), priceCoke(125) {}
+      currentState(S_START){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -60,9 +60,6 @@ private:
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
-   int money;
-   int stock;
-   const int priceCoke;
    event_SM statemachine(event_SM eventIn);
    event_SM checkCents(const int cents);
 };

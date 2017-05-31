@@ -83,9 +83,9 @@ void MainWindow::enableCentButtons(bool enable) {
 }*/
 
 void MainWindow::setLogger(const QString &text) {
-   logDisplay->moveCursor(QTextCursor::End);
-   logDisplay->insertPlainText("\n" + text);
-   logDisplay->moveCursor(QTextCursor::End);
+//   logDisplay->moveCursor(QTextCursor::End);
+//   logDisplay->insertPlainText("\n" + text);
+//   logDisplay->moveCursor(QTextCursor::End);
 }
 
 void MainWindow::createMenu()

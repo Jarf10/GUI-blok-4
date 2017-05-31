@@ -11,6 +11,7 @@ char info[20];
 void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
+      std::cout << "State" << std::endl;
       eventIn = statemachine(eventIn);
    }
 }
@@ -30,21 +31,25 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
       case S_INITIALISED:
       {
+         std::cout << "state initialise before printing values" << std::endl;
          initialise.print_values();
          eventOut = E_READY;
          NextState = S_WAIT_FOR_INPUT;
+         std::cout << "state initialise after printing values" << std::endl;
          break;
       }
       case S_WAIT_FOR_INPUT:
       {
          //the start menu will wait for input when it is selected
          DSP_ShowInfo("Make a selection:\n");
+         std::cout << "In wait for input" << std::endl;
          eventOut = StartMenu();
          switch(eventOut)
          {
             case E_PRESSED_0:
-               DSP_ShowInfo("Make a selection:\n");
+               DSP_ShowInfo("Make a selection:\n");               
                eventOut = PreSettingsMenu();
+               std::cout << "In wait for input pressed 0" << std::endl;
                switch(eventOut)
                {
                   //----------------------presets menu--------------------------------------------------------
