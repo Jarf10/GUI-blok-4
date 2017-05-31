@@ -2,6 +2,11 @@
 #include <time.h>
 #include <stdlib.h>
 #include "StateMachine.h"
+#include "MainWindow.h"
+#include <QTextEdit>
+#include <QPushButton>
+#include <iostream>
+#include <sstream>
 
 //Each hardware accessable fuction is described below
 
@@ -72,7 +77,10 @@ void DSP_ShowSettings(SM_settings *currentsettings)
 
 void DSP_ShowInfo(char *text)
 {
-    printf("--Info %s", text);
+   /*std::stringstream displayBuffer;
+   displayBuffer << "--Info " << text << std::endl;
+   pDialog->setLogger(QString(displayBuffer.str().c_str()));
+   */printf("--Info %s\n", text);
 }
 
 void DSP_ShowDebug(char *text)
@@ -101,7 +109,7 @@ void DSP_ShowDebug(char *text)
 event_SM StartMenu(void)
 {
     DSP_ShowInfo("<0> Preset settings <1> Settings <2> Show settings\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -120,7 +128,7 @@ event_SM StartMenu(void)
     default:
         DSP_ShowDebug("An error occurred in StartMenu\n\tDid you press a number between the 0 and 2?");
         break;
-    }
+    }*/
 }
 
 event_SM PreSettingsMenu(void)

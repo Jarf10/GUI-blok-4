@@ -38,6 +38,6 @@ void SM_settings::print_values(){
                  << "\nAmount food: " << choosen_AmountPlantFood
                  << "\nSelected row: " << Selected_Row
                  << "\nSelected speed: " << Speed;
-   pDialog->setLogger(QString(displayBuffer.str().c_str()));
+   //pDialog->setLogger(QString(displayBuffer.str().c_str()));
 }
 

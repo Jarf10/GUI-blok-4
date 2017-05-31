@@ -27,6 +27,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          //initialise at the start
          eventOut = E_SM_initialise;
          SMinitialise();
+         pDialog->enableCentButtons(true);
+         pDialog->setLogger("test");
          NextState = S_INITIALISED;
          break;
       case S_INITIALISED:
@@ -43,8 +45,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          //the start menu will wait for input when it is selected
          DSP_ShowInfo("Make a selection:\n");
          std::cout << "In wait for input" << std::endl;
-         eventOut = StartMenu();
-         switch(eventOut)
+         StartMenu();
+         switch(eventIn)
          {
             case E_PRESSED_0:
                DSP_ShowInfo("Make a selection:\n");               

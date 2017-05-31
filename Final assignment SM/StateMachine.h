@@ -42,7 +42,6 @@ private:
    unsigned int choosen_AmountPlantFood;
    unsigned int Selected_Row;
    unsigned int Speed;
-   MainWindow *pDialog;
 };
 
 class StateMachine {
