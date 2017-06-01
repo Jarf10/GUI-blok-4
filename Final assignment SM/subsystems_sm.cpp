@@ -135,14 +135,10 @@ event_SM Hardware::StartMenu(void)
     }*/
 }
 
-event_SM Hardware::PreSettingsMenu(void)
+void Hardware::PreSettingsMenu(void)
 {
     DSP_ShowInfo("<0> Run <1> Sundeville <2> Lantana <3> Cyclaam <4> Malva <5> Tibouchina\n");
-    int selection;
-    scanf("%d", &selection);
-    // Empty input buffer
-    while ((getchar()) != '\n');
-
+    /*
     switch(selection)
     {
     case 0:
@@ -166,7 +162,7 @@ event_SM Hardware::PreSettingsMenu(void)
     default:
         DSP_ShowDebug("Unknown command");
         break;
-    }
+    }*/
 }
 
 event_SM Hardware::AreYouSure(void)

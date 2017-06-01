@@ -10,12 +10,13 @@ typedef enum {S_NO,
               S_INITIALISED,
               S_WAIT_FOR_INPUT,
               S_RUN_INITIALISE, S_RUN,
+              S_DETECTED_0, S_DETECTED_1,
               S_DETECTED_0_0, S_DETECTED_0_1, S_DETECTED_0_2, S_DETECTED_0_3, S_DETECTED_0_4, S_DETECTED_0_5,
               S_DETECTED_1_0, S_DETECTED_1_1, S_DETECTED_1_2, S_DETECTED_1_3, S_DETECTED_1_4, S_DETECTED_1_5,
               S_DETECTED_ROW, S_DETECTED_WALL
              } state_SM;
 
-typedef enum {E_NO,
+typedef enum {E_NO, E_SEQ,
               E_READY,
               E_SM_initialise,
               E_PRESSED_0, E_PRESSED_1, E_PRESSED_2, E_PRESSED_3,E_PRESSED_4, E_PRESSED_5, E_return,
@@ -59,7 +60,7 @@ public:
    void DSP_ShowInfo(char *text);
    void DSP_ShowDebug(char *text);
    event_SM StartMenu(void);
-   event_SM PreSettingsMenu(void);
+   void PreSettingsMenu(void);
    event_SM AreYouSure(void);
    event_SM SettingsMenu(void);
    void Amount_water(unsigned int *choosen_AmountWater);

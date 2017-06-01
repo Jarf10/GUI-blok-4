@@ -11,7 +11,6 @@ char info[20];
 void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
-      pDialog->setLogger("DEBUG handle event\n");
       eventIn = statemachine(eventIn);
    }
 }
@@ -27,84 +26,35 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          //initialise at the start
          eventOut = E_SM_initialise;
          pHardware->SMinitialise();
-         pDialog->enableButtons(true);
-         pDialog->setLogger("test");
          NextState = S_INITIALISED;
          break;
       case S_INITIALISED:
-      {
+
+         pDialog->enableButtons(true);
          initialise.print_values();
-         eventOut = E_READY;
          NextState = S_WAIT_FOR_INPUT;
-         break;
-      }
-      case S_WAIT_FOR_INPUT:
-      {
          //the start menu will wait for input when it is selected
          pHardware->DSP_ShowInfo("Make a selection:");
-         std::cout << "In wait for input" << std::endl;
+         //std::cout << "In wait for input" << std::endl;
          pHardware->StartMenu();
+         eventOut = E_NO;
+         break;
+
+      case S_WAIT_FOR_INPUT:
+      {
          switch(eventIn)
          {
             case E_PRESSED_0:
                pHardware->DSP_ShowInfo("Make a selection:\n");
-               eventOut = pHardware->PreSettingsMenu();
-               std::cout << "In wait for input pressed 0" << std::endl;
-               switch(eventOut)
-               {
-                  //----------------------presets menu--------------------------------------------------------
-                  case E_PRESSED_0:
-                     NextState = S_DETECTED_0_0;
-                     break;
-                  case E_PRESSED_1:
-                     NextState = S_DETECTED_0_1;
-                     break;
-                  case E_PRESSED_2:
-                     NextState = S_DETECTED_0_2;
-                     break;
-                  case E_PRESSED_3:
-                     NextState = S_DETECTED_0_3;
-                     break;
-                  case E_PRESSED_4:
-                     NextState = S_DETECTED_0_4;
-                     break;
-                  case E_PRESSED_5:
-                     NextState = S_DETECTED_0_5;
-                     break;
-                  default: pHardware->DSP_ShowDebug("S_WAIT_FOR_INPUT received unknown event");
-                     NextState = S_WAIT_FOR_INPUT;
-                     break;
-               }
+               pHardware->PreSettingsMenu();
+               eventOut = E_NO;
+               NextState = S_DETECTED_0;
                break;
 
             case E_PRESSED_1:
                pHardware->DSP_ShowInfo("Make a selection:\n");
-               eventOut = pHardware->SettingsMenu();
-               switch(eventOut)
-               {
-                  //----------------------manual settings menu--------------------------------------------------------
-                  case E_PRESSED_0:
-                     NextState = S_DETECTED_1_0;
-                     break;
-                  case E_PRESSED_1:
-                     NextState = S_DETECTED_1_1;
-                     break;
-                  case E_PRESSED_2:
-                     NextState = S_DETECTED_1_2;
-                     break;
-                  case E_PRESSED_3:
-                     NextState = S_DETECTED_1_3;
-                     break;
-                  case E_PRESSED_4:
-                     NextState = S_DETECTED_1_4;
-                     break;
-                  case E_PRESSED_5:
-                     NextState = S_DETECTED_1_5;
-                     break;
-                  default: pHardware->DSP_ShowDebug("S_WAIT_FOR_INPUT received unknown event");
-                     NextState = S_WAIT_FOR_INPUT;
-                     break;
-               }
+               pHardware->SettingsMenu();
+               NextState = S_DETECTED_1;
                break;
                //----------------------Show current settings--------------------------------------------------------
             case E_PRESSED_2:
@@ -113,11 +63,72 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                break;
             default:
                pHardware->DSP_ShowDebug("Error in waiting for input state");
+               break;
          }
-         break;
       }
+         break;
+
          //----------------------Below are all states of the keys displayed-----------------------------------
+      case S_DETECTED_0:
+         switch(eventIn)
+         {
+            //----------------------presets menu--------------------------------------------------------
+            case E_PRESSED_0:
+               NextState = S_DETECTED_0_0;
+               break;
+            case E_PRESSED_1:
+               NextState = S_DETECTED_0_1;
+               break;
+            case E_PRESSED_2:
+               NextState = S_DETECTED_0_2;
+               break;
+            case E_PRESSED_3:
+               NextState = S_DETECTED_0_3;
+               break;
+            case E_PRESSED_4:
+               NextState = S_DETECTED_0_4;
+               break;
+            case E_PRESSED_5:
+               NextState = S_DETECTED_0_5;
+               break;
+            default: pHardware->DSP_ShowDebug("S_WAIT_FOR_INPUT received unknown event");
+               NextState = S_WAIT_FOR_INPUT;
+               break;
+         }
+         eventOut = E_SEQ;
+         break;
+
+      case S_DETECTED_1:
+         switch(eventIn)
+         {
+            //----------------------manual settings menu--------------------------------------------------------
+            case E_PRESSED_0:
+               NextState = S_DETECTED_1_0;
+               break;
+            case E_PRESSED_1:
+               NextState = S_DETECTED_1_1;
+               break;
+            case E_PRESSED_2:
+               NextState = S_DETECTED_1_2;
+               break;
+            case E_PRESSED_3:
+               NextState = S_DETECTED_1_3;
+               break;
+            case E_PRESSED_4:
+               NextState = S_DETECTED_1_4;
+               break;
+            case E_PRESSED_5:
+               NextState = S_DETECTED_1_5;
+               break;
+            default: pHardware->DSP_ShowDebug("S_WAIT_FOR_INPUT received unknown event");
+               NextState = S_WAIT_FOR_INPUT;
+               break;
+         }
+         eventOut = E_NO;
+         break;
+
       case S_DETECTED_0_0:
+         eventOut = E_SEQ;
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_0_1:
@@ -275,6 +286,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             eventOut = E_MOTOR1_RUN_FORWARDS;
             pHardware->DSP_ShowInfo("Motor 1 is running forwards\n\n");
             eventOut = E_ROW_DETECTED;
+            eventOut = E_SEQ;
             NextState = S_RUN;
          }
          break;
@@ -307,6 +319,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                pHardware->DSP_ShowInfo("Motor1 running backwards\n");
                eventOut = E_MOTOR1_STOP;
                pHardware->DSP_ShowInfo("Motor1 stopped\n\n");
+               eventOut = E_SEQ;
                NextState = S_WAIT_FOR_INPUT;
                break;
             default:
@@ -328,6 +341,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                sprintf(info, "Row %d detected\n", RowsCounted);
                pHardware->DSP_ShowInfo(info);
             }
+            eventOut = E_SEQ;
             NextState = S_RUN;
          }
          else if(RowsCounted == initialise.get_r())
@@ -336,11 +350,13 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             sprintf(info, "Motor1 stopped\n");
             pHardware->DSP_ShowInfo(info);
             eventOut = E_MOTOR2_RUN_FORWARDS;
+            eventOut = E_SEQ;
             NextState = S_RUN;
          }
          else
          {
             pHardware->DSP_ShowDebug("Error in S_DETECTED_ROW");
+            eventOut = E_NO;
             NextState = S_WAIT_FOR_INPUT;
          }
          break;
@@ -349,6 +365,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
       default:
          pHardware->DSP_ShowDebug("unknown state you will be redirected to S_WAIT_FOR_INPUT");
+         eventOut = E_NO;
          NextState = S_WAIT_FOR_INPUT;
          break;
    }
