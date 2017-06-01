@@ -45,10 +45,37 @@ private:
    MainWindow *pDialog;
 };
 
+class Hardware{
+public:
+   Hardware(MainWindow* pDialog): pDialog(pDialog){}
+   void SMinitialise(void);
+   void DSP_Initialise(void);
+   void PDT_Initialise(void);
+   void FOOD_Initialise(void);
+   void MOTOR1_Initialise(void);
+   void MOTOR2_Initialise(void);
+   void RCNT_Initialise(void);
+   void DSP_ShowSettings(SM_settings *currentsettings);
+   void DSP_ShowInfo(char *text);
+   void DSP_ShowDebug(char *text);
+   event_SM StartMenu(void);
+   event_SM PreSettingsMenu(void);
+   event_SM AreYouSure(void);
+   event_SM SettingsMenu(void);
+   void Amount_water(unsigned int *choosen_AmountWater);
+   void Amount_Plant_Food(unsigned int *choosen_AmountPlantFood);
+   void Row(unsigned int *Selected_Row);
+   void Sprinkler_Speed(unsigned int *Speed);
+private:
+   MainWindow *pDialog;
+};
+
+
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
-      pDialog(pDialog), /*pSettings(new SM_settings(pDialog)),*/ currentState(S_START){}
+      pDialog(pDialog), /*pSettings(new SM_settings(pDialog)),*/
+      pHardware(new Hardware(pDialog)), currentState(S_START){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -57,32 +84,11 @@ public:
 private:
    MainWindow *pDialog;
    //SM_settings* pSettings;
+   Hardware* pHardware;
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
    event_SM statemachine(event_SM eventIn);
 };
 
-/*class Hardware{
-
-};*/
-
-void SMinitialise(void);
-void DSP_Initialise(void);
-void PDT_Initialise(void);
-void FOOD_Initialise(void);
-void MOTOR1_Initialise(void);
-void MOTOR2_Initialise(void);
-void RCNT_Initialise(void);
-void DSP_ShowSettings(void);
-void DSP_ShowInfo(char *text);
-void DSP_ShowDebug(char *text);
-event_SM StartMenu(void);
-event_SM PreSettingsMenu(void);
-event_SM AreYouSure(void);
-event_SM SettingsMenu(void);
-void Amount_water(unsigned int *choosen_AmountWater);
-void Amount_Plant_Food(unsigned int *choosen_AmountPlantFood);
-void Row(unsigned int *Selected_Row);
-void Sprinkler_Speed(unsigned int *Speed);
 #endif

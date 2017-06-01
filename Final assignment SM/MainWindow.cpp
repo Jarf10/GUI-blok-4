@@ -72,7 +72,7 @@ MainWindow::MainWindow()
    pStateMachine->handleEvent(E_SM_initialise);
 }
 
-void MainWindow::enableCentButtons(bool enable) {
+void MainWindow::enableButtons(bool enable) {
    for (int i = 0; i < NumButtons; i++) {
       buttons[i]->setEnabled(enable);
    }
@@ -150,7 +150,7 @@ void MainWindow::createHorizontalGroupBoxes()
    layout1->addWidget(buttons[9], 4, 1);
    connect(buttons[9], SIGNAL(released()), this, SLOT(button0()));
 
-   enableCentButtons(false);
+   enableButtons(false);
    horizontalGroupBox1->setLayout(layout1);
 
    // HorizontalGroupBox 2 -----------------------------------------------------

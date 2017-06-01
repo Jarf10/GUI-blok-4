@@ -10,7 +10,7 @@
 
 //Each hardware accessable fuction is described below
 
-void SMinitialise()
+void Hardware::SMinitialise()
 {
     //Display initialised
     DSP_Initialise();
@@ -30,37 +30,37 @@ void SMinitialise()
 
 }
 
-void DSP_Initialise()
+void Hardware::DSP_Initialise()
 {
     DSP_ShowDebug("Display: initialised");
 }
 
-void PDT_Initialise()
+void Hardware::PDT_Initialise()
 {
     DSP_ShowDebug("Pressure detector: initialised");
 }
 
-void FOOD_Initialise()
+void Hardware::FOOD_Initialise()
 {
     DSP_ShowDebug("Food: detected");
 }
 
-void MOTOR1_Initialise()
+void Hardware::MOTOR1_Initialise()
 {
     DSP_ShowDebug("Motor1: initialised");
 }
 
-void MOTOR2_Initialise()
+void Hardware::MOTOR2_Initialise()
 {
     DSP_ShowDebug("Motor2: initialised\n\n");
 }
 
-void RCNT_Initialise()
+void Hardware::RCNT_Initialise()
 {
     DSP_ShowDebug("Row counter: initialised");
 }
 
-void DSP_ShowSettings(SM_settings *currentsettings)
+void Hardware::DSP_ShowSettings(SM_settings *currentsettings)
 {
     char info[50];
     sprintf(info, "Current settings:\n");
@@ -75,18 +75,21 @@ void DSP_ShowSettings(SM_settings *currentsettings)
     DSP_ShowInfo(info);
 }
 
-void DSP_ShowInfo(char *text)
+void Hardware::DSP_ShowInfo(char *text)
 {
-   /*std::stringstream displayBuffer;
+   std::stringstream displayBuffer;
    displayBuffer << "--Info " << text << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
-   */
-   printf("--Info %s\n", text);
+
+   //printf("--Info %s\n", text);
 }
 
-void DSP_ShowDebug(char *text)
+void Hardware::DSP_ShowDebug(char *text)
 {
-    printf("--DEBUG %s\n", text);
+   std::stringstream displayBuffer;
+   displayBuffer << "--DEBUG " << text << std::endl;
+   pDialog->setLogger(QString(displayBuffer.str().c_str()));
+   //printf("--DEBUG %s\n", text);
 
     time_t rawtime;
       struct tm * timeinfo;
@@ -107,7 +110,7 @@ void DSP_ShowDebug(char *text)
     fclose(debuglog);
 }
 
-event_SM StartMenu(void)
+event_SM Hardware::StartMenu(void)
 {
     DSP_ShowInfo("<0> Preset settings <1> Settings <2> Show settings\n");
     /*int selection;
@@ -132,7 +135,7 @@ event_SM StartMenu(void)
     }*/
 }
 
-event_SM PreSettingsMenu(void)
+event_SM Hardware::PreSettingsMenu(void)
 {
     DSP_ShowInfo("<0> Run <1> Sundeville <2> Lantana <3> Cyclaam <4> Malva <5> Tibouchina\n");
     int selection;
@@ -166,7 +169,7 @@ event_SM PreSettingsMenu(void)
     }
 }
 
-event_SM AreYouSure(void)
+event_SM Hardware::AreYouSure(void)
 {
     DSP_ShowInfo("Do you want to run with these settings?\n\n");
     DSP_ShowInfo("<0> Yes <1> No\n");
@@ -190,7 +193,7 @@ event_SM AreYouSure(void)
 
 }
 
-event_SM SettingsMenu(void)
+event_SM Hardware::SettingsMenu(void)
 {
     DSP_ShowInfo("<0> Run <1> Water <2> Food <3> Row <4> Speed <5> Show selection\n");
     int selection;
@@ -224,7 +227,7 @@ event_SM SettingsMenu(void)
     }
 }
 
-void Amount_water(unsigned int *choosen_AmountWater)
+void Hardware::Amount_water(unsigned int *choosen_AmountWater)
 {
     DSP_ShowInfo("How much water do you like to sprinkle?\n");
     unsigned int selection;
@@ -239,7 +242,7 @@ void Amount_water(unsigned int *choosen_AmountWater)
         DSP_ShowDebug("Invalid value!\n");
     }
 }
-void Amount_Plant_Food(unsigned int *choosen_AmountPlantFood)
+void Hardware::Amount_Plant_Food(unsigned int *choosen_AmountPlantFood)
 {
     DSP_ShowInfo("How much food do you like to mix?\n");
     int selection;
@@ -254,7 +257,7 @@ void Amount_Plant_Food(unsigned int *choosen_AmountPlantFood)
         DSP_ShowDebug("Invalid value!\n");
     }
 }
-void Row(unsigned int *Selected_Row)
+void Hardware::Row(unsigned int *Selected_Row)
 {
     DSP_ShowInfo("What/Which row(s) do you like to sprinkle?\n");
     int selection;
@@ -269,7 +272,7 @@ void Row(unsigned int *Selected_Row)
         DSP_ShowDebug("Invalid value!\n");
     }
 }
-void Sprinkler_Speed(unsigned int *Speed)
+void Hardware::Sprinkler_Speed(unsigned int *Speed)
 {
     DSP_ShowInfo("How fast do you want to sprinkle?\n");
     int selection;

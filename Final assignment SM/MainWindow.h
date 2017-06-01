@@ -61,7 +61,7 @@ class MainWindow: public QDialog
 
 public:
    MainWindow();
-   void enableCentButtons(bool enable);
+   void enableButtons(bool enable);
    void setDisplay(const QString& text);
    void setLogger(const QString& text);
 
