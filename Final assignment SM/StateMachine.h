@@ -28,7 +28,7 @@ class MainWindow;
 
 class SM_settings {
 public:
-   SM_settings();
+   SM_settings(MainWindow* pDialog);
    void set_values(const unsigned int w, const unsigned int f,
                    const unsigned int r, const unsigned int s);
    unsigned int get_w();
@@ -42,13 +42,13 @@ private:
    unsigned int choosen_AmountPlantFood;
    unsigned int Selected_Row;
    unsigned int Speed;
+   MainWindow *pDialog;
 };
 
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
-      pDialog(pDialog),
-      currentState(S_START){}
+      pDialog(pDialog), /*pSettings(new SM_settings(pDialog)),*/ currentState(S_START){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -56,12 +56,16 @@ public:
 
 private:
    MainWindow *pDialog;
+   //SM_settings* pSettings;
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
    event_SM statemachine(event_SM eventIn);
-   event_SM checkCents(const int cents);
 };
+
+/*class Hardware{
+
+};*/
 
 void SMinitialise(void);
 void DSP_Initialise(void);

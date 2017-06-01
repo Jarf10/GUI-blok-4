@@ -5,8 +5,8 @@
 #include <iostream>
 #include <sstream>
 
-SM_settings::SM_settings() : choosen_AmountWater(100), choosen_AmountPlantFood(50),
-   Selected_Row(1), Speed(2){}
+SM_settings::SM_settings(MainWindow* pDialog) : choosen_AmountWater(100), choosen_AmountPlantFood(50),
+   Selected_Row(1), Speed(2), pDialog(pDialog){}
 
 void SM_settings::set_values(const unsigned int w, const unsigned int f,
                 const unsigned int r, const unsigned int s){
@@ -38,6 +38,6 @@ void SM_settings::print_values(){
                  << "\nAmount food: " << choosen_AmountPlantFood
                  << "\nSelected row: " << Selected_Row
                  << "\nSelected speed: " << Speed;
-   //pDialog->setLogger(QString(displayBuffer.str().c_str()));
+   pDialog->setLogger(QString(displayBuffer.str().c_str()));
 }
 

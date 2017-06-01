@@ -80,7 +80,8 @@ void DSP_ShowInfo(char *text)
    /*std::stringstream displayBuffer;
    displayBuffer << "--Info " << text << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
-   */printf("--Info %s\n", text);
+   */
+   printf("--Info %s\n", text);
 }
 
 void DSP_ShowDebug(char *text)

@@ -89,6 +89,7 @@ private:
 
    //**************************************************************************
    StateMachine *pStateMachine;
+   //SM_settings *pSM_settings;
    event_SM event;
 
 private slots:

@@ -19,7 +19,7 @@ void StateMachine::handleEvent(event_SM eventIn) {
 event_SM StateMachine::statemachine(event_SM eventIn) {
    NextState = S_NO;
    eventOut = E_NO;
-   SM_settings initialise;
+   SM_settings initialise(pDialog);
 
    switch(currentState)
    {
@@ -122,7 +122,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
       case S_DETECTED_0_1:
       {
-         SM_settings Sundeville;
+         SM_settings Sundeville(pDialog);
          Sundeville.set_values(10, 20, 6, 2);
          eventOut = AreYouSure();
          switch(eventOut)
@@ -143,7 +143,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       }
       case S_DETECTED_0_2:
       {
-         SM_settings Lantana;
+         SM_settings Lantana(pDialog);
          Lantana.set_values(80, 20, 10, 1);
          eventOut = AreYouSure();
          switch(eventOut)
@@ -164,7 +164,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       }
       case S_DETECTED_0_3:
       {
-         SM_settings Cyclaam;
+         SM_settings Cyclaam(pDialog);
          Cyclaam.set_values(70, 60, 11, 1);
          eventOut = AreYouSure();
          switch(eventOut)
@@ -185,7 +185,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       }
       case S_DETECTED_0_4:
       {
-         SM_settings Malva;
+         SM_settings Malva(pDialog);
          Malva.set_values(40, 30, 15, 1);
          eventOut = AreYouSure();
          switch(eventOut)
@@ -206,7 +206,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       }
       case S_DETECTED_0_5:
       {
-         SM_settings Tibouchina;
+         SM_settings Tibouchina(pDialog);
          Tibouchina.set_values(80, 40, 2, 1);
          eventOut = AreYouSure();
          switch(eventOut)
