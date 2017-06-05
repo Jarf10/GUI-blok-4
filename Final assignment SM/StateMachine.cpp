@@ -185,6 +185,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
       case S_DETECTED_1_1:
       {
+         unsigned int temp_water = initialise.get_w();
          pHardware->Amount_water();
          eventOut = E_NO;
          NextState = S_INSERT_NUMBERS;
