@@ -26,7 +26,7 @@ void Hardware::SMinitialise()
                   "\tFood detected\n"
                   "\tRow counter initialised\n"
                   "\tMotor1 initialised\n"
-                  "\tMotor2 initialised\n\n");
+                  "\tMotor2 initialised");
 
 }
 
@@ -80,8 +80,6 @@ void Hardware::DSP_ShowInfo(char *text)
    std::stringstream displayBuffer;
    displayBuffer << "--Info " << text << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
-
-   //printf("--Info %s\n", text);
 }
 
 void Hardware::DSP_ShowDebug(char *text)
@@ -89,7 +87,6 @@ void Hardware::DSP_ShowDebug(char *text)
    std::stringstream displayBuffer;
    displayBuffer << "--DEBUG " << text << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
-   //printf("--DEBUG %s\n", text);
 
     time_t rawtime;
       struct tm * timeinfo;
@@ -165,11 +162,11 @@ void Hardware::PreSettingsMenu(void)
     }*/
 }
 
-event_SM Hardware::AreYouSure(void)
+void Hardware::AreYouSure(void)
 {
     DSP_ShowInfo("Do you want to run with these settings?\n\n");
     DSP_ShowInfo("<0> Yes <1> No\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -185,14 +182,13 @@ event_SM Hardware::AreYouSure(void)
     default:
         DSP_ShowDebug("Unknown command");
         break;
-    }
-
+    }*/
 }
 
-event_SM Hardware::SettingsMenu(void)
+void Hardware::SettingsMenu(void)
 {
     DSP_ShowInfo("<0> Run <1> Water <2> Food <3> Row <4> Speed <5> Show selection\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -220,13 +216,13 @@ event_SM Hardware::SettingsMenu(void)
     default:
         DSP_ShowDebug("Unknown command");
         break;
-    }
+    }*/
 }
 
-void Hardware::Amount_water(unsigned int *choosen_AmountWater)
+void Hardware::Amount_water(void)
 {
     DSP_ShowInfo("How much water do you like to sprinkle?\n");
-    unsigned int selection;
+    /*unsigned int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -236,12 +232,12 @@ void Hardware::Amount_water(unsigned int *choosen_AmountWater)
     }
     else{
         DSP_ShowDebug("Invalid value!\n");
-    }
+    }*/
 }
-void Hardware::Amount_Plant_Food(unsigned int *choosen_AmountPlantFood)
+void Hardware::Amount_Plant_Food(void)
 {
     DSP_ShowInfo("How much food do you like to mix?\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -251,12 +247,12 @@ void Hardware::Amount_Plant_Food(unsigned int *choosen_AmountPlantFood)
     }
     else{
         DSP_ShowDebug("Invalid value!\n");
-    }
+    }*/
 }
-void Hardware::Row(unsigned int *Selected_Row)
+void Hardware::Row(void)
 {
     DSP_ShowInfo("What/Which row(s) do you like to sprinkle?\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -266,12 +262,12 @@ void Hardware::Row(unsigned int *Selected_Row)
     }
     else{
         DSP_ShowDebug("Invalid value!\n");
-    }
+    }*/
 }
-void Hardware::Sprinkler_Speed(unsigned int *Speed)
+void Hardware::Sprinkler_Speed(void)
 {
     DSP_ShowInfo("How fast do you want to sprinkle?\n");
-    int selection;
+    /*int selection;
     scanf("%d", &selection);
     // Empty input buffer
     while ((getchar()) != '\n');
@@ -281,5 +277,5 @@ void Hardware::Sprinkler_Speed(unsigned int *Speed)
     }
     else{
         DSP_ShowDebug("Invalid value!\n");
-    }
+    }*/
 }

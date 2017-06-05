@@ -150,6 +150,10 @@ void MainWindow::createHorizontalGroupBoxes()
    layout1->addWidget(buttons[9], 4, 1);
    connect(buttons[9], SIGNAL(released()), this, SLOT(button0()));
 
+   buttons[10] = new QPushButton(tr("OKAY"));
+   layout1->addWidget(buttons[10]);
+   connect(buttons[10], SIGNAL(released()), this, SLOT(buttonokay()));
+
    enableButtons(false);
    horizontalGroupBox1->setLayout(layout1);
 
@@ -219,20 +223,25 @@ void MainWindow::button5()
 
 void MainWindow::button6()
 {
-   pStateMachine->handleEvent(E_NO);
+   pStateMachine->handleEvent(E_PRESSED_6);
 }
 
 void MainWindow::button7()
 {
-   pStateMachine->handleEvent(E_NO);
+   pStateMachine->handleEvent(E_PRESSED_7);
 }
 
 void MainWindow::button8()
 {
-   pStateMachine->handleEvent(E_NO);
+   pStateMachine->handleEvent(E_PRESSED_8);
 }
 
 void MainWindow::button9()
 {
-   pStateMachine->handleEvent(E_NO);
+   pStateMachine->handleEvent(E_PRESSED_9);
+}
+
+void MainWindow::buttonokay()
+{
+   pStateMachine->handleEvent(E_PRESSED_OKAY);
 }

@@ -11,17 +11,20 @@ typedef enum {S_NO,
               S_WAIT_FOR_INPUT,
               S_RUN_INITIALISE, S_RUN,
               S_DETECTED_0, S_DETECTED_1,
-              S_DETECTED_0_0, S_DETECTED_0_1, S_DETECTED_0_2, S_DETECTED_0_3, S_DETECTED_0_4, S_DETECTED_0_5,
-              S_DETECTED_1_0, S_DETECTED_1_1, S_DETECTED_1_2, S_DETECTED_1_3, S_DETECTED_1_4, S_DETECTED_1_5,
-              S_DETECTED_ROW, S_DETECTED_WALL
+              S_DETECTED_0_0, S_DETECTED_0_1, S_DETECTED_0_2, S_DETECTED_0_3,
+              S_DETECTED_0_4, S_DETECTED_0_5, S_DETECTED_1_0, S_DETECTED_1_1,
+              S_DETECTED_1_2, S_DETECTED_1_3, S_DETECTED_1_4, S_DETECTED_1_5,
+              S_DETECTED_ROW, S_DETECTED_WALL, S_SURE, S_INSERT_NUMBERS
              } state_SM;
 
 typedef enum {E_NO, E_SEQ,
               E_READY,
               E_SM_initialise,
-              E_PRESSED_0, E_PRESSED_1, E_PRESSED_2, E_PRESSED_3,E_PRESSED_4, E_PRESSED_5, E_return,
-              E_ROW_DETECTED, E_WALL_DETECTED,
-              E_MOTOR1_RUN_FORWARDS, E_MOTOR1_RUN_BACKWARDS, E_MOTOR1_STOP, E_MOTOR2_RUN_FORWARDS, E_MOTOR2_RUN_BACKWARDS, E_MOTOR2_STOP,
+              E_PRESSED_0, E_PRESSED_1, E_PRESSED_2, E_PRESSED_3,E_PRESSED_4,
+              E_PRESSED_5, E_PRESSED_6, E_PRESSED_7, E_PRESSED_8, E_PRESSED_9,
+              E_return, E_PRESSED_OKAY, E_ROW_DETECTED, E_WALL_DETECTED,
+              E_MOTOR1_RUN_FORWARDS, E_MOTOR1_RUN_BACKWARDS, E_MOTOR1_STOP,
+              E_MOTOR2_RUN_FORWARDS, E_MOTOR2_RUN_BACKWARDS, E_MOTOR2_STOP,
               E_SPRINKLER_ON, E_SPRINKLER_OFF
              } event_SM;
 
@@ -61,12 +64,12 @@ public:
    void DSP_ShowDebug(char *text);
    event_SM StartMenu(void);
    void PreSettingsMenu(void);
-   event_SM AreYouSure(void);
-   event_SM SettingsMenu(void);
-   void Amount_water(unsigned int *choosen_AmountWater);
-   void Amount_Plant_Food(unsigned int *choosen_AmountPlantFood);
-   void Row(unsigned int *Selected_Row);
-   void Sprinkler_Speed(unsigned int *Speed);
+   void AreYouSure(void);
+   void SettingsMenu(void);
+   void Amount_water(void);
+   void Amount_Plant_Food(void);
+   void Row(void);
+   void Sprinkler_Speed(void);
 private:
    MainWindow *pDialog;
 };
@@ -75,8 +78,7 @@ private:
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
-      pDialog(pDialog), /*pSettings(new SM_settings(pDialog)),*/
-      pHardware(new Hardware(pDialog)), currentState(S_START){}
+      pDialog(pDialog), pHardware(new Hardware(pDialog)), currentState(S_START){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -86,10 +88,12 @@ private:
    MainWindow *pDialog;
    //SM_settings* pSettings;
    Hardware* pHardware;
+   state_SM LastState;
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
    event_SM statemachine(event_SM eventIn);
+   unsigned int insertednumbers;
 };
 
 #endif

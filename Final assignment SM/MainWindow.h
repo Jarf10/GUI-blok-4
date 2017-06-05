@@ -71,7 +71,7 @@ private:
    void createGridGroupBox();
    void createFormGroupBox();
 
-   enum { NumGridRows = 3, NumButtons = 10 };
+   enum { NumGridRows = 3, NumButtons = 11 };
 
    QMenuBar *menuBar;
    QGroupBox *horizontalGroupBox1;
@@ -103,6 +103,7 @@ private slots:
    void button7();
    void button8();
    void button9();
+   void buttonokay();
 };
 
 #endif // MAINWINDOW_H

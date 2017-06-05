@@ -19,6 +19,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
    NextState = S_NO;
    eventOut = E_NO;
    SM_settings initialise(pDialog);
+   SM_settings newinitialise(pDialog);
 
    switch(currentState)
    {
@@ -26,18 +27,16 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          //initialise at the start
          eventOut = E_SM_initialise;
          pHardware->SMinitialise();
+         pDialog->enableButtons(true);
          NextState = S_INITIALISED;
          break;
       case S_INITIALISED:
-
-         pDialog->enableButtons(true);
          initialise.print_values();
-         NextState = S_WAIT_FOR_INPUT;
          //the start menu will wait for input when it is selected
          pHardware->DSP_ShowInfo("Make a selection:");
-         //std::cout << "In wait for input" << std::endl;
          pHardware->StartMenu();
          eventOut = E_NO;
+         NextState = S_WAIT_FOR_INPUT;
          break;
 
       case S_WAIT_FOR_INPUT:
@@ -54,15 +53,19 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             case E_PRESSED_1:
                pHardware->DSP_ShowInfo("Make a selection:\n");
                pHardware->SettingsMenu();
+               eventOut = E_NO;
                NextState = S_DETECTED_1;
                break;
                //----------------------Show current settings--------------------------------------------------------
             case E_PRESSED_2:
                initialise.print_values();
-               NextState = S_WAIT_FOR_INPUT;
+               eventOut = E_SEQ;
+               NextState = S_INITIALISED;
                break;
             default:
                pHardware->DSP_ShowDebug("Error in waiting for input state");
+               eventOut = E_SEQ;
+               NextState = S_INITIALISED;
                break;
          }
       }
@@ -124,7 +127,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                NextState = S_WAIT_FOR_INPUT;
                break;
          }
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          break;
 
       case S_DETECTED_0_0:
@@ -135,115 +138,56 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       {
          SM_settings Sundeville(pDialog);
          Sundeville.set_values(10, 20, 6, 2);
-         eventOut = pHardware->AreYouSure();
-         switch(eventOut)
-         {
-            case E_PRESSED_0:
-               initialise = Sundeville;
-
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               NextState = S_WAIT_FOR_INPUT;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               break;
-         }
+         newinitialise = Sundeville;
+         eventOut = E_NO;
+         NextState = S_SURE;
          break;
       }
       case S_DETECTED_0_2:
       {
          SM_settings Lantana(pDialog);
          Lantana.set_values(80, 20, 10, 1);
-         eventOut = pHardware->AreYouSure();
-         switch(eventOut)
-         {
-            case E_PRESSED_0:
-               initialise = Lantana;
-
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               NextState = S_WAIT_FOR_INPUT;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               break;
-         }
+         newinitialise = Lantana;
+         eventOut = E_NO;
+         NextState = S_SURE;
          break;
       }
       case S_DETECTED_0_3:
       {
          SM_settings Cyclaam(pDialog);
          Cyclaam.set_values(70, 60, 11, 1);
-         eventOut = pHardware->AreYouSure();
-         switch(eventOut)
-         {
-            case E_PRESSED_0:
-               initialise = Cyclaam;
-
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               NextState = S_WAIT_FOR_INPUT;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               break;
-         }
+         newinitialise = Cyclaam;
+         eventOut = E_NO;
+         NextState = S_SURE;
          break;
       }
       case S_DETECTED_0_4:
       {
          SM_settings Malva(pDialog);
          Malva.set_values(40, 30, 15, 1);
-         eventOut = pHardware->AreYouSure();
-         switch(eventOut)
-         {
-            case E_PRESSED_0:
-               initialise = Malva;
-
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               NextState = S_WAIT_FOR_INPUT;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               break;
-         }
+         newinitialise = Malva;
+         eventOut = E_NO;
+         NextState = S_SURE;
          break;
       }
       case S_DETECTED_0_5:
       {
          SM_settings Tibouchina(pDialog);
          Tibouchina.set_values(80, 40, 2, 1);
-         eventOut = pHardware->AreYouSure();
-         switch(eventOut)
-         {
-            case E_PRESSED_0:
-               initialise = Tibouchina;
-
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               NextState = S_WAIT_FOR_INPUT;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               break;
-         }
+         newinitialise = Tibouchina;
+         eventOut = E_NO;
+         NextState = S_SURE;
          break;
       }
       case S_DETECTED_1_0:
+         eventOut = E_SEQ;
          NextState = S_RUN_INITIALISE;
          break;
       case S_DETECTED_1_1:
       {
-         unsigned int temp_water = initialise.get_w();
-         pHardware->Amount_water(&temp_water);
-         NextState = S_WAIT_FOR_INPUT;
+         pHardware->Amount_water();
+         eventOut = E_NO;
+         NextState = S_INSERT_NUMBERS;
          break;
       }
       case S_DETECTED_1_2:
@@ -363,11 +307,75 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       case S_DETECTED_WALL:
          pHardware->DSP_ShowDebug("Error in S_DETECTED_WALL");
          break;
+      case S_SURE:
+         pHardware->AreYouSure();
+         switch(eventIn)
+         {
+            case E_PRESSED_0:
+               initialise = newinitialise;
+               eventOut = E_SEQ;
+               NextState = S_RUN_INITIALISE;
+               break;
+            case E_PRESSED_1:
+               eventOut = E_SEQ;
+               NextState = S_INITIALISED;
+               break;
+            default:
+               pHardware->DSP_ShowDebug("Invalid choice");
+               eventOut = E_NO;
+               NextState = S_DETECTED_1;
+               break;
+         }
+         break;
+      case S_INSERT_NUMBERS:
+         switch (eventIn) {
+            case E_PRESSED_0:
+               insertednumbers = insertednumbers*10;
+               break;
+            case E_PRESSED_1:
+               insertednumbers = insertednumbers*10+1;
+               break;
+            case E_PRESSED_2:
+               insertednumbers = insertednumbers*10+2;
+               break;
+            case E_PRESSED_3:
+               insertednumbers = insertednumbers*10+3;
+               break;
+            case E_PRESSED_4:
+               insertednumbers = insertednumbers*10+4;
+               break;
+            case E_PRESSED_5:
+               insertednumbers = insertednumbers*10+5;
+               break;
+            case E_PRESSED_6:
+               insertednumbers = insertednumbers*10+6;
+               break;
+            case E_PRESSED_7:
+               insertednumbers = insertednumbers*10+7;
+               break;
+            case E_PRESSED_8:
+               insertednumbers = insertednumbers*10+8;
+               break;
+            case E_PRESSED_9:
+               insertednumbers = insertednumbers*10+9;
+               break;
+            case E_PRESSED_OKAY:
+               NextState = LastState;
+               break;
+         }
+         eventOut = E_NO;
+         if(NextState != LastState){
+            NextState = S_INSERT_NUMBERS;
+         }
+         break;
       default:
          pHardware->DSP_ShowDebug("unknown state you will be redirected to S_WAIT_FOR_INPUT");
          eventOut = E_NO;
          NextState = S_WAIT_FOR_INPUT;
          break;
+   }
+   if (currentState != S_INSERT_NUMBERS){
+   LastState = currentState;
    }
    currentState = NextState;
    return eventOut;
