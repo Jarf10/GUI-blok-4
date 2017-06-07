@@ -49,7 +49,6 @@
 MainWindow::MainWindow()
 {
    pStateMachine = new StateMachine(this);
-   //pSM_settings = new SM_settings(this);
 
    createMenu();
    createHorizontalGroupBoxes();

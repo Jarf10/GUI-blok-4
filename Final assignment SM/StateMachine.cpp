@@ -18,8 +18,8 @@ void StateMachine::handleEvent(event_SM eventIn) {
 event_SM StateMachine::statemachine(event_SM eventIn) {
    NextState = S_NO;
    eventOut = E_NO;
-   SM_settings initialise(pDialog);
-   SM_settings newinitialise(pDialog);
+   //SM_settings initialise(pDialog);
+   //SM_settings newinitialise(pDialog);
 
    switch(currentState)
    {
@@ -28,6 +28,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          eventOut = E_SM_initialise;
          pHardware->SMinitialise();
          pDialog->enableButtons(true);
+         insertednumbers = 0;
+         numberinserted = false;
          NextState = S_INITIALISED;
          break;
       case S_INITIALISED:
@@ -185,31 +187,70 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
       case S_DETECTED_1_1:
       {
-         unsigned int temp_water = initialise.get_w();
-         pHardware->Amount_water();
-         eventOut = E_NO;
-         NextState = S_INSERT_NUMBERS;
+         if(!numberinserted){
+            pHardware->Amount_water();
+            eventOut = E_NO;
+            NextState = S_INSERT_NUMBERS;
+         }
+         else{
+            initialise.set_values(insertednumbers, initialise.get_f(), initialise.get_r(),
+                                  initialise.get_s());
+            numberinserted = false;
+            insertednumbers = 0;
+            eventOut = E_SEQ;
+            NextState = S_INITIALISED;
+         }
          break;
       }
       case S_DETECTED_1_2:
       {
-         unsigned int temp_food = initialise.get_f();
-         pHardware->Amount_Plant_Food(&temp_food);
-         NextState = S_WAIT_FOR_INPUT;
+         if(!numberinserted){
+             pHardware->Amount_Plant_Food();
+            eventOut = E_NO;
+            NextState = S_INSERT_NUMBERS;
+         }
+         else{
+            initialise.set_values(initialise.get_w(), insertednumbers, initialise.get_r(),
+                                  initialise.get_s());
+            numberinserted = false;
+            insertednumbers = 0;
+            eventOut = E_SEQ;
+            NextState = S_INITIALISED;
+         }
          break;
       }
       case S_DETECTED_1_3:
       {
-         unsigned int temp_row = initialise.get_r();
-         pHardware->Row(&temp_row);
-         NextState = S_WAIT_FOR_INPUT;
+         if(!numberinserted){
+            pHardware->Row();
+            eventOut = E_NO;
+            NextState = S_INSERT_NUMBERS;
+         }
+         else{
+            initialise.set_values(initialise.get_w(), initialise.get_f(), insertednumbers,
+                                  initialise.get_s());
+            numberinserted = false;
+            insertednumbers = 0;
+            eventOut = E_SEQ;
+            NextState = S_INITIALISED;
+         }
          break;
       }
       case S_DETECTED_1_4:
       {
-         unsigned int temp_speed = initialise.get_s();
-         pHardware->Sprinkler_Speed(&temp_speed);
-         NextState = S_WAIT_FOR_INPUT;
+         if(!numberinserted){
+            pHardware->Sprinkler_Speed();
+            eventOut = E_NO;
+            NextState = S_INSERT_NUMBERS;
+         }
+         else{
+            initialise.set_values(initialise.get_w(), initialise.get_f(), initialise.get_r(),
+                                  insertednumbers);
+            numberinserted = false;
+            insertednumbers = 0;
+            eventOut = E_SEQ;
+            NextState = S_INITIALISED;
+         }
          break;
       }
       case S_DETECTED_1_5:
@@ -361,11 +402,17 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                insertednumbers = insertednumbers*10+9;
                break;
             case E_PRESSED_OKAY:
+               numberinserted = true;
                NextState = LastState;
+               //LastState = S_INSERT_NUMBERS;
                break;
          }
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          if(NextState != LastState){
+            std::stringstream buffer;
+            buffer << "--info current number: " << insertednumbers;
+            pDialog->setLogger(QString(buffer.str().c_str()));
+            eventOut = E_NO;
             NextState = S_INSERT_NUMBERS;
          }
          break;
@@ -376,7 +423,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          break;
    }
    if (currentState != S_INSERT_NUMBERS){
-   LastState = currentState;
+      LastState = currentState;
    }
    currentState = NextState;
    return eventOut;

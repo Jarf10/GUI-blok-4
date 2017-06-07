@@ -52,7 +52,7 @@ private:
 class Hardware{
 public:
    Hardware(MainWindow* pDialog): pDialog(pDialog){}
-   void SMinitialise(void);
+   void SMinitialise();
    void DSP_Initialise(void);
    void PDT_Initialise(void);
    void FOOD_Initialise(void);
@@ -78,7 +78,8 @@ private:
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
-      pDialog(pDialog), pHardware(new Hardware(pDialog)), currentState(S_START){}
+      pDialog(pDialog), pHardware(new Hardware(pDialog)),
+      currentState(S_START), initialise(pDialog), newinitialise(pDialog){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -94,6 +95,9 @@ private:
    event_SM eventOut;
    event_SM statemachine(event_SM eventIn);
    unsigned int insertednumbers;
+   bool numberinserted;
+   SM_settings initialise;
+   SM_settings newinitialise;
 };
 
 #endif
