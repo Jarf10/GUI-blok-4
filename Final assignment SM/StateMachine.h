@@ -79,7 +79,8 @@ class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog), pHardware(new Hardware(pDialog)),
-      currentState(S_START), initialise(pDialog), newinitialise(pDialog){}
+      currentState(S_START), initialise(pDialog), newinitialise(pDialog),
+      firsttime(true){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -87,17 +88,17 @@ public:
 
 private:
    MainWindow *pDialog;
-   //SM_settings* pSettings;
    Hardware* pHardware;
    state_SM LastState;
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
    event_SM statemachine(event_SM eventIn);
-   unsigned int insertednumbers;
-   bool numberinserted;
    SM_settings initialise;
    SM_settings newinitialise;
+   unsigned int insertednumbers;
+   bool numberinserted;
+   bool firsttime;
 };
 
 #endif

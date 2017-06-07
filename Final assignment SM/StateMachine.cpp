@@ -141,7 +141,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          SM_settings Sundeville(pDialog);
          Sundeville.set_values(10, 20, 6, 2);
          newinitialise = Sundeville;
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          NextState = S_SURE;
          break;
       }
@@ -150,7 +150,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          SM_settings Lantana(pDialog);
          Lantana.set_values(80, 20, 10, 1);
          newinitialise = Lantana;
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          NextState = S_SURE;
          break;
       }
@@ -159,7 +159,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          SM_settings Cyclaam(pDialog);
          Cyclaam.set_values(70, 60, 11, 1);
          newinitialise = Cyclaam;
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          NextState = S_SURE;
          break;
       }
@@ -168,7 +168,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          SM_settings Malva(pDialog);
          Malva.set_values(40, 30, 15, 1);
          newinitialise = Malva;
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          NextState = S_SURE;
          break;
       }
@@ -177,7 +177,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          SM_settings Tibouchina(pDialog);
          Tibouchina.set_values(80, 40, 2, 1);
          newinitialise = Tibouchina;
-         eventOut = E_NO;
+         eventOut = E_SEQ;
          NextState = S_SURE;
          break;
       }
@@ -205,7 +205,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       case S_DETECTED_1_2:
       {
          if(!numberinserted){
-             pHardware->Amount_Plant_Food();
+            pHardware->Amount_Plant_Food();
             eventOut = E_NO;
             NextState = S_INSERT_NUMBERS;
          }
@@ -267,12 +267,11 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          else
          {
-            pHardware->DSP_ShowInfo("Running with following settings:\n\n");
+            pHardware->DSP_ShowInfo("Running with following settings:");
             initialise.print_values();
             eventOut = E_MOTOR1_RUN_FORWARDS;
-            pHardware->DSP_ShowInfo("Motor 1 is running forwards\n\n");
+            pHardware->DSP_ShowInfo("Motor 1 is running forwards");
             eventOut = E_ROW_DETECTED;
-            eventOut = E_SEQ;
             NextState = S_RUN;
          }
          break;
@@ -280,6 +279,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          switch(eventIn)
          {
             case E_ROW_DETECTED:
+               eventOut = E_SEQ;
                NextState = S_DETECTED_ROW;
                break;
             case E_MOTOR2_RUN_FORWARDS:
@@ -306,7 +306,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                eventOut = E_MOTOR1_STOP;
                pHardware->DSP_ShowInfo("Motor1 stopped\n\n");
                eventOut = E_SEQ;
-               NextState = S_WAIT_FOR_INPUT;
+               NextState = S_INITIALISED;
                break;
             default:
                pHardware->DSP_ShowDebug("Error in S_RUN");
@@ -319,15 +319,15 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             RowsCounted++;
             if(RowsCounted == initialise.get_r())
             {
-               sprintf(info, "Row %d detected\n\n", RowsCounted);
+               sprintf(info, "Row %d detected\n", RowsCounted);
                pHardware->DSP_ShowInfo(info);
             }
             else
             {
-               sprintf(info, "Row %d detected\n", RowsCounted);
+               sprintf(info, "Row %d detected", RowsCounted);
                pHardware->DSP_ShowInfo(info);
             }
-            eventOut = E_SEQ;
+            eventOut = E_ROW_DETECTED;
             NextState = S_RUN;
          }
          else if(RowsCounted == initialise.get_r())
@@ -335,8 +335,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             eventOut = E_MOTOR1_STOP;
             sprintf(info, "Motor1 stopped\n");
             pHardware->DSP_ShowInfo(info);
+            RowsCounted = 0;
             eventOut = E_MOTOR2_RUN_FORWARDS;
-            eventOut = E_SEQ;
             NextState = S_RUN;
          }
          else
@@ -350,23 +350,31 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          pHardware->DSP_ShowDebug("Error in S_DETECTED_WALL");
          break;
       case S_SURE:
-         pHardware->AreYouSure();
-         switch(eventIn)
-         {
-            case E_PRESSED_0:
-               initialise = newinitialise;
-               eventOut = E_SEQ;
-               NextState = S_RUN_INITIALISE;
-               break;
-            case E_PRESSED_1:
-               eventOut = E_SEQ;
-               NextState = S_INITIALISED;
-               break;
-            default:
-               pHardware->DSP_ShowDebug("Invalid choice");
-               eventOut = E_NO;
-               NextState = S_DETECTED_1;
-               break;
+         if(firsttime){
+            pHardware->AreYouSure();
+            eventOut = E_NO;
+            NextState = S_SURE;
+            firsttime = false;
+         }
+         else{
+            switch(eventIn)
+            {
+               case E_PRESSED_0:
+                  initialise = newinitialise;
+                  eventOut = E_SEQ;
+                  NextState = S_RUN_INITIALISE;
+                  break;
+               case E_PRESSED_1:
+                  eventOut = E_SEQ;
+                  NextState = S_INITIALISED;
+                  break;
+               default:
+                  pHardware->DSP_ShowDebug("Invalid choice");
+                  eventOut = E_NO;
+                  NextState = S_DETECTED_1;
+                  break;
+            }
+            firsttime = true;
          }
          break;
       case S_INSERT_NUMBERS:
