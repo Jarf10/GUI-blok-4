@@ -277,7 +277,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_RUN:
-         switch(eventOut)
+         switch(eventIn)
          {
             case E_ROW_DETECTED:
                NextState = S_DETECTED_ROW;
