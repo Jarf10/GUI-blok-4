@@ -106,14 +106,14 @@ void Hardware::DSP_ShowDebug(char *text)
    fclose(debuglog);
 }
 
-event_SM Hardware::StartMenu(void)
+event_SM Hardware::StartMenu()
 {
    DSP_ShowInfo("<0> Preset settings");
    DSP_ShowInfo("<1> Settings");
    DSP_ShowInfo("<2> Show settings\n");
 }
 
-void Hardware::PreSettingsMenu(void)
+void Hardware::PreSettingsMenu()
 {
    DSP_ShowInfo("<0> Run");
    DSP_ShowInfo("<1> Sundeville");
@@ -123,30 +123,30 @@ void Hardware::PreSettingsMenu(void)
    DSP_ShowInfo("<5> Tibouchina\n");
 }
 
-void Hardware::AreYouSure(void)
+void Hardware::AreYouSure()
 {
    DSP_ShowInfo("Do you want to run with these settings?\n");
    DSP_ShowInfo("<0> Yes <1> No\n");
 }
 
-void Hardware::SettingsMenu(void)
+void Hardware::SettingsMenu()
 {
    DSP_ShowInfo("<0> Run <1> Water <2> Food <3> Row <4> Speed <5> Show selection\n");
 }
 
-void Hardware::Amount_water(void)
+void Hardware::Amount_water()
 {
    DSP_ShowInfo("How much water do you like to sprinkle?\n");
 }
-void Hardware::Amount_Plant_Food(void)
+void Hardware::Amount_Plant_Food()
 {
    DSP_ShowInfo("How much food do you like to mix?\n");
 }
-void Hardware::Row(void)
+void Hardware::Row()
 {
    DSP_ShowInfo("What/Which row(s) do you like to sprinkle?\n");
 }
-void Hardware::Sprinkler_Speed(void)
+void Hardware::Sprinkler_Speed()
 {
    DSP_ShowInfo("How fast do you want to sprinkle?\n");
 }
