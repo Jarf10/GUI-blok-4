@@ -1,5 +1,6 @@
 #ifndef STATEMACHINE_H
 #define STATEMACHINE_H
+#include <string>
 
 typedef int error_t;
 
@@ -53,34 +54,33 @@ class Hardware{
 public:
    Hardware(MainWindow* pDialog): pDialog(pDialog){}
    void SMinitialise();
-   void DSP_Initialise(void);
-   void PDT_Initialise(void);
-   void FOOD_Initialise(void);
-   void MOTOR1_Initialise(void);
-   void MOTOR2_Initialise(void);
-   void RCNT_Initialise(void);
+   void DSP_Initialise();
+   void PDT_Initialise();
+   void FOOD_Initialise();
+   void MOTOR1_Initialise();
+   void MOTOR2_Initialise();
+   void RCNT_Initialise();
    void DSP_ShowSettings(SM_settings *currentsettings);
    void DSP_ShowInfo(char *text);
    void DSP_ShowDebug(char *text);
-   event_SM StartMenu(void);
-   void PreSettingsMenu(void);
-   void AreYouSure(void);
-   void SettingsMenu(void);
-   void Amount_water(void);
-   void Amount_Plant_Food(void);
-   void Row(void);
-   void Sprinkler_Speed(void);
+   event_SM StartMenu();
+   void PreSettingsMenu();
+   void AreYouSure();
+   void SettingsMenu();
+   void Amount_water();
+   void Amount_Plant_Food();
+   void Row();
+   void Sprinkler_Speed();
 private:
    MainWindow *pDialog;
 };
-
 
 class StateMachine {
 public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog), pHardware(new Hardware(pDialog)),
       currentState(S_START), initialise(pDialog), newinitialise(pDialog),
-      firsttime(true){}
+      firsttime(true), RowsCounted(0){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -99,6 +99,8 @@ private:
    unsigned int insertednumbers;
    bool numberinserted;
    bool firsttime;
+   unsigned int RowsCounted;
+   char info[20];
 };
 
 #endif

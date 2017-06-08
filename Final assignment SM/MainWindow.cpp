@@ -77,15 +77,16 @@ void MainWindow::enableButtons(bool enable) {
    }
 }
 
-/*void MainWindow::setDisplay(const QString &text) {
-   display->setText(text);
-   display->update();
-}*/
-
 void MainWindow::setLogger(const QString &text) {
    logDisplay->moveCursor(QTextCursor::End);
    logDisplay->insertPlainText("\n" + text);
    logDisplay->moveCursor(QTextCursor::End);
+}
+
+void MainWindow::setDebugLogger(const QString &text){
+   debugDisplay->moveCursor(QTextCursor::End);
+   debugDisplay->insertPlainText("\n" + text);
+   debugDisplay->moveCursor(QTextCursor::End);
 }
 
 void MainWindow::createMenu()
@@ -104,20 +105,14 @@ void MainWindow::createHorizontalGroupBoxes()
    QGridLayout *layout1 = new QGridLayout;
 
    buttons[0] = new QPushButton(tr("1"));
-   buttons[0]->setStyleSheet("background-color: lightblue;");
    layout1->addWidget(buttons[0], 0, 0);
    connect(buttons[0], SIGNAL(released()), this, SLOT(button1()));
 
    buttons[1] = new QPushButton(tr("2"));
-   buttons[1]->setStyleSheet("background-color: purple;");
    layout1->addWidget(buttons[1], 0, 1);
    connect(buttons[1], SIGNAL(released()), this, SLOT(button2()));
 
    buttons[2] = new QPushButton(tr("3"));
-   buttons[2]->setStyleSheet("color: blue;"
-                             "background-color: yellow;"
-                             "selection-color: yellow;"
-                             "selection-background-color: blue;");
    layout1->addWidget(buttons[2], 0 , 2);
    connect(buttons[2], SIGNAL(released()), this, SLOT(button3()));
 
@@ -150,6 +145,7 @@ void MainWindow::createHorizontalGroupBoxes()
    connect(buttons[9], SIGNAL(released()), this, SLOT(button0()));
 
    buttons[10] = new QPushButton(tr("OKAY"));
+   buttons[10]->setStyleSheet("background-color: green;");
    layout1->addWidget(buttons[10]);
    connect(buttons[10], SIGNAL(released()), this, SLOT(buttonokay()));
 
@@ -164,6 +160,12 @@ void MainWindow::createHorizontalGroupBoxes()
    logDisplay->setReadOnly(true);
    layout2->addWidget(logDisplay);
    horizontalGroupBox2->setLayout(layout2);
+
+   debugDisplay = new QTextEdit("Debug log started", this);
+   debugDisplay->setOverwriteMode(false);
+   debugDisplay->setReadOnly(true);
+   layout2->addWidget(debugDisplay);
+   horizontalGroupBox2->setLayout(layout2);
 }
 
 void MainWindow::createGridGroupBox()
@@ -175,14 +177,6 @@ void MainWindow::createGridGroupBox()
    QLabel *label = new QLabel;
    label->setPixmap(*image);
    layout->addWidget(label, 0, 0);
-
-   /*display = new QTextEdit(this);
-   display->setReadOnly(true);
-   display->setTextColor(QColor(0,0,0));
-   display->setFontPointSize(30);
-   display->setFixedSize(500, 50);
-   display->setOverwriteMode(true);
-   layout->addWidget(display, 0, 1, 1, 5);*/
 
    layout->setColumnStretch(1, 10);
    layout->setColumnStretch(2, 20);

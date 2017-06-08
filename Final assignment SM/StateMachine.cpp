@@ -5,9 +5,6 @@
 #include <iostream>
 #include <sstream>
 
-unsigned int RowsCounted = 0;
-char info[20];
-
 void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
@@ -18,8 +15,6 @@ void StateMachine::handleEvent(event_SM eventIn) {
 event_SM StateMachine::statemachine(event_SM eventIn) {
    NextState = S_NO;
    eventOut = E_NO;
-   //SM_settings initialise(pDialog);
-   //SM_settings newinitialise(pDialog);
 
    switch(currentState)
    {
@@ -28,12 +23,12 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          eventOut = E_SM_initialise;
          pHardware->SMinitialise();
          pDialog->enableButtons(true);
+         initialise.print_values();
          insertednumbers = 0;
          numberinserted = false;
          NextState = S_INITIALISED;
          break;
       case S_INITIALISED:
-         initialise.print_values();
          //the start menu will wait for input when it is selected
          pHardware->DSP_ShowInfo("Make a selection:");
          pHardware->StartMenu();
@@ -46,14 +41,14 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          switch(eventIn)
          {
             case E_PRESSED_0:
-               pHardware->DSP_ShowInfo("Make a selection:\n");
+               pHardware->DSP_ShowInfo("Make a selection:");
                pHardware->PreSettingsMenu();
                eventOut = E_NO;
                NextState = S_DETECTED_0;
                break;
 
             case E_PRESSED_1:
-               pHardware->DSP_ShowInfo("Make a selection:\n");
+               pHardware->DSP_ShowInfo("Make a selection:");
                pHardware->SettingsMenu();
                eventOut = E_NO;
                NextState = S_DETECTED_1;

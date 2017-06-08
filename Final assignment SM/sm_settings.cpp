@@ -54,10 +54,10 @@ unsigned int SM_settings::get_s(){
 
 void SM_settings::print_values(){
    std::stringstream displayBuffer;
-   displayBuffer << "\n\nAmount water: " << choosen_AmountWater
-                 << "\nAmount food: " << choosen_AmountPlantFood
-                 << "\nSelected row: " << Selected_Row
-                 << "\nSelected speed: " << Speed;
+   displayBuffer << "\n--Info Amount water: " << choosen_AmountWater
+                 << "\n--Info Amount food: " << choosen_AmountPlantFood
+                 << "\n--Info Selected row: " << Selected_Row
+                 << "\n--Info Selected speed: " << Speed << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
 }
 

@@ -64,6 +64,7 @@ public:
    void enableButtons(bool enable);
    void setDisplay(const QString& text);
    void setLogger(const QString& text);
+   void setDebugLogger(const QString& text);
 
 private:
    void createMenu();
@@ -80,6 +81,7 @@ private:
 
    QTextEdit *display;
    QTextEdit *logDisplay;
+   QTextEdit *debugDisplay;
    //QLabel *labels[NumGridRows];
    QPushButton *buttons[NumButtons];
    QDialogButtonBox *buttonBox;
