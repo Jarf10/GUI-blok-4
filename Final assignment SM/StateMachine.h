@@ -61,8 +61,8 @@ public:
    void MOTOR2_Initialise();
    void RCNT_Initialise();
    void DSP_ShowSettings(SM_settings *currentsettings);
-   void DSP_ShowInfo(char *text);
-   void DSP_ShowDebug(char *text);
+   void DSP_ShowInfo(const std::string& text);
+   void DSP_ShowDebug(const std::string& text);
    event_SM StartMenu();
    void PreSettingsMenu();
    void AreYouSure();

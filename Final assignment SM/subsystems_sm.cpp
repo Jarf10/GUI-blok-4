@@ -74,20 +74,20 @@ void Hardware::DSP_ShowSettings(SM_settings *currentsettings)
    DSP_ShowInfo(info);
 }
 
-void Hardware::DSP_ShowInfo(char *text)
+void Hardware::DSP_ShowInfo(const std::string& text)
 {
    std::stringstream displayBuffer;
    displayBuffer << "--Info " << text;// << std::endl;
    pDialog->setLogger(QString(displayBuffer.str().c_str()));
 }
 
-void Hardware::DSP_ShowDebug(char *text)
+void Hardware::DSP_ShowDebug(const std::string& text)
 {
    std::stringstream displayBuffer;
    displayBuffer << "--DEBUG " << text;// << std::endl;
    pDialog->setDebugLogger(QString(displayBuffer.str().c_str()));
 
-   time_t rawtime;
+   /*time_t rawtime;
    struct tm * timeinfo;
 
    time ( &rawtime );
@@ -98,12 +98,12 @@ void Hardware::DSP_ShowDebug(char *text)
    {
       DSP_ShowInfo("Error opening file!\n");
       exit(1);
-   }
+   }*/
 
-   /* print some text */
-   fprintf(debuglog, "\nTime: %s -- %s",asctime (timeinfo), text);
+   /* print some text *//*
+   fprintf(debuglog, "\nTime: %s -- %s", asctime(timeinfo), text);
 
-   fclose(debuglog);
+   fclose(debuglog);*/
 }
 
 event_SM Hardware::StartMenu()
