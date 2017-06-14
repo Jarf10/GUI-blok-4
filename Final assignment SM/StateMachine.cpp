@@ -134,7 +134,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       case S_DETECTED_0_1:
       {
          SM_settings Sundeville(pDialog);
-         Sundeville.set_values(10, 20, 6, 2);
+         Sundeville.set_values(60, 20, 6, 2);
          newinitialise = Sundeville;
          eventOut = E_SEQ;
          NextState = S_SURE;
@@ -250,7 +250,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
       }
       case S_DETECTED_1_5:
          initialise.print_values();
-         NextState = S_WAIT_FOR_INPUT;
+         eventOut = E_SEQ;
+         NextState = S_INITIALISED;
          break;
          //--------------------------From here the running state is described----------------------------------------------------
       case S_RUN_INITIALISE:

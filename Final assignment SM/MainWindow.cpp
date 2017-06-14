@@ -173,10 +173,35 @@ void MainWindow::createGridGroupBox()
    gridGroupBox = new QGroupBox(tr("Display"));
    QGridLayout *layout = new QGridLayout;
 
-   QPixmap *image = new QPixmap(":/icons/Cola.ico");  // in CVMresources.qrc
-   QLabel *label = new QLabel;
-   label->setPixmap(*image);
-   layout->addWidget(label, 0, 0);
+   QPixmap *image1 = new QPixmap(":/jpg/cyclaam.jpg");  // in CVMresources.qrc
+   QLabel *label1 = new QLabel;
+   label1->setPixmap(*image1);
+   label1->setPixmap(image1->scaled(100,50,Qt::KeepAspectRatio));
+   layout->addWidget(label1, 0, 0);
+
+   QPixmap *image2 = new QPixmap(":/jpg/Malva.jpg");  // in CVMresources.qrc
+   QLabel *label2 = new QLabel;
+   label2->setPixmap(*image2);
+   label2->setPixmap(image2->scaled(100,50,Qt::KeepAspectRatio));
+   layout->addWidget(label2, 0, 1);
+
+   QPixmap *image3 = new QPixmap(":/jpg/lantana.jpg");  // in CVMresources.qrc
+   QLabel *label3 = new QLabel;
+   label3->setPixmap(*image3);
+   label3->setPixmap(image3->scaled(100,50,Qt::KeepAspectRatio));
+   layout->addWidget(label3, 0, 2);
+
+   QPixmap *image4 = new QPixmap(":/jpg/Sundeville.jpg");  // in CVMresources.qrc
+   QLabel *label4 = new QLabel;
+   label4->setPixmap(*image4);
+   label4->setPixmap(image4->scaled(100,50,Qt::KeepAspectRatio));
+   layout->addWidget(label4, 0, 3);
+
+   QPixmap *image5 = new QPixmap(":/jpg/Tibouchina.jpg");  // in CVMresources.qrc
+   QLabel *label5 = new QLabel;
+   label5->setPixmap(*image5);
+   label5->setPixmap(image5->scaled(100,50,Qt::KeepAspectRatio));
+   layout->addWidget(label5, 0, 4);
 
    layout->setColumnStretch(1, 10);
    layout->setColumnStretch(2, 20);
