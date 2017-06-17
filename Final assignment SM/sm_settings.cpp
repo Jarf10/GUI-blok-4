@@ -16,19 +16,19 @@ void SM_settings::set_values(const unsigned int w, const unsigned int f,
    else{
    pDialog->setLogger("--ERROR The amount of water must be between 20 and 100%");
    }
-   if((f>=0)&(f<=100)){
+   if(f<=100){
    choosen_AmountPlantFood = f;
    }
    else{
    pDialog->setLogger("--ERROR The amount of food must be between 0 and 100%");
    }
-   if((r>=1)&(r<=40)){
+   if((r>0)&(r<=40)){
    Selected_Row = r;
    }
    else{
       pDialog->setLogger("--ERROR The amount of rows must be between 1 and 40");
    }
-   if((s>=0)&(s<=50)){
+   if(s<51){
     Speed = s;
    }
    else{

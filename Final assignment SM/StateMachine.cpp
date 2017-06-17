@@ -9,6 +9,11 @@ void StateMachine::handleEvent(event_SM eventIn) {
    // Handle sequential states.
    while (eventIn != E_NO) {
       eventIn = statemachine(eventIn);
+
+      if(eventIn == E_PRESSED_BACK){
+         currentState = LastState;
+         eventIn = E_NO;
+      }
    }
 }
 

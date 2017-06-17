@@ -59,6 +59,8 @@ class MainWindow: public QDialog
 {
    Q_OBJECT
 
+#define JPG_WIDTH 200
+#define JPG_HEIGHT 100
 public:
    MainWindow();
    void enableButtons(bool enable);
@@ -69,15 +71,17 @@ public:
 private:
    void createMenu();
    void createHorizontalGroupBoxes();
+   void createVerticalGroupBox();
    void createGridGroupBox();
    void createFormGroupBox();
 
-   enum { NumGridRows = 3, NumButtons = 11 };
+   enum { NumGridRows = 3, NumButtons = 14};
 
    QMenuBar *menuBar;
    QGroupBox *horizontalGroupBox1;
    QGroupBox *horizontalGroupBox2;
    QGroupBox *gridGroupBox;
+   QGroupBox *verticalGroupBox;
 
    QTextEdit *display;
    QTextEdit *logDisplay;
@@ -106,6 +110,9 @@ private slots:
    void button8();
    void button9();
    void buttonokay();
+   void buttonback();
+   void buttonDisableDebug();
+   void buttonHideDebug();
 };
 
 #endif // MAINWINDOW_H

@@ -7,6 +7,9 @@
 #include <QPushButton>
 #include <iostream>
 #include <sstream>
+#include <ctime>
+#include <iostream>
+#include <fstream>
 
 //Each hardware accessable fuction is described below
 
@@ -87,20 +90,27 @@ void Hardware::DSP_ShowDebug(const std::string& text)
    displayBuffer << "--DEBUG " << text;// << std::endl;
    pDialog->setDebugLogger(QString(displayBuffer.str().c_str()));
 
+   std::time_t timeinfo = std::time(nullptr);
+
+   std::ofstream debuglog;
+   debuglog.open ("Debuglogcpp.txt", std::fstream::app);
+   debuglog << "Time: " << std::asctime(std::localtime(&timeinfo)) << " -- "
+            << text << std::endl;
+   debuglog.close();
+
    /*time_t rawtime;
    struct tm * timeinfo;
 
    time ( &rawtime );
    timeinfo = localtime ( &rawtime );
 
-   FILE *debuglog = fopen("Debuglog.txt", "a");
+   FILE *debuglog = fopen("Debuglogc.txt", "a");
    if (debuglog == NULL)
    {
       DSP_ShowInfo("Error opening file!\n");
       exit(1);
-   }*/
+   }
 
-   /* print some text *//*
    fprintf(debuglog, "\nTime: %s -- %s", asctime(timeinfo), text);
 
    fclose(debuglog);*/

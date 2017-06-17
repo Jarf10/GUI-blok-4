@@ -51,6 +51,7 @@ MainWindow::MainWindow()
    pStateMachine = new StateMachine(this);
 
    createMenu();
+   createVerticalGroupBox();
    createHorizontalGroupBoxes();
    createGridGroupBox();
 
@@ -96,6 +97,25 @@ void MainWindow::createMenu()
    exitAction = fileMenu->addAction(tr("E&xit"));
    menuBar->addMenu(fileMenu);
    connect(exitAction, SIGNAL(triggered()), this, SLOT(accept()));
+}
+
+void MainWindow::createVerticalGroupBox(){
+
+   verticalGroupBox = new QGroupBox(tr("Screen buttons"));
+   QVBoxLayout *layout = new QVBoxLayout;
+
+   buttons[12] = new QPushButton(tr("Disable debug screen"));
+   buttons[12]->setStyleSheet("background-color: red;");
+   layout->addWidget(buttons[12]);
+   connect(buttons[12], SIGNAL(released()), this, SLOT(buttonDisableDebug()));
+
+   buttons[13] = new QPushButton(tr("Hide debug screen"));
+   buttons[13]->setStyleSheet("background-color: red;");
+   layout->addWidget(buttons[13]);
+   connect(buttons[13], SIGNAL(released()), this, SLOT(buttonHideDebug()));
+
+   verticalGroupBox->setLayout(layout);
+
 }
 
 void MainWindow::createHorizontalGroupBoxes()
@@ -149,23 +169,30 @@ void MainWindow::createHorizontalGroupBoxes()
    layout1->addWidget(buttons[10]);
    connect(buttons[10], SIGNAL(released()), this, SLOT(buttonokay()));
 
-   enableButtons(false);
+   buttons[11] = new QPushButton(tr("BACK"));
+   buttons[11]->setStyleSheet("background-color: red;");
+   layout1->addWidget(buttons[11], 4, 0);
+   connect(buttons[11], SIGNAL(released()), this, SLOT(buttonback()));
+
    horizontalGroupBox1->setLayout(layout1);
 
    // HorizontalGroupBox 2 -----------------------------------------------------
    horizontalGroupBox2 = new QGroupBox(tr("Screen"));
    QHBoxLayout *layout2 = new QHBoxLayout;
+
    logDisplay = new QTextEdit("Logging started", this);
    logDisplay->setOverwriteMode(false);
    logDisplay->setReadOnly(true);
    layout2->addWidget(logDisplay);
-   horizontalGroupBox2->setLayout(layout2);
 
    debugDisplay = new QTextEdit("Debug log started", this);
    debugDisplay->setOverwriteMode(false);
    debugDisplay->setReadOnly(true);
    layout2->addWidget(debugDisplay);
+
+   layout2->addWidget(verticalGroupBox);
    horizontalGroupBox2->setLayout(layout2);
+   enableButtons(false);
 }
 
 void MainWindow::createGridGroupBox()
@@ -176,35 +203,33 @@ void MainWindow::createGridGroupBox()
    QPixmap *image1 = new QPixmap(":/jpg/cyclaam.jpg");  // in CVMresources.qrc
    QLabel *label1 = new QLabel;
    label1->setPixmap(*image1);
-   label1->setPixmap(image1->scaled(100,50,Qt::KeepAspectRatio));
+   label1->setPixmap(image1->scaled(JPG_WIDTH, JPG_HEIGHT, Qt::KeepAspectRatio));
    layout->addWidget(label1, 0, 0);
 
    QPixmap *image2 = new QPixmap(":/jpg/Malva.jpg");  // in CVMresources.qrc
    QLabel *label2 = new QLabel;
    label2->setPixmap(*image2);
-   label2->setPixmap(image2->scaled(100,50,Qt::KeepAspectRatio));
+   label2->setPixmap(image2->scaled(JPG_WIDTH, JPG_HEIGHT, Qt::KeepAspectRatio));
    layout->addWidget(label2, 0, 1);
 
    QPixmap *image3 = new QPixmap(":/jpg/lantana.jpg");  // in CVMresources.qrc
    QLabel *label3 = new QLabel;
    label3->setPixmap(*image3);
-   label3->setPixmap(image3->scaled(100,50,Qt::KeepAspectRatio));
+   label3->setPixmap(image3->scaled(JPG_WIDTH, JPG_HEIGHT, Qt::KeepAspectRatio));
    layout->addWidget(label3, 0, 2);
 
    QPixmap *image4 = new QPixmap(":/jpg/Sundeville.jpg");  // in CVMresources.qrc
    QLabel *label4 = new QLabel;
    label4->setPixmap(*image4);
-   label4->setPixmap(image4->scaled(100,50,Qt::KeepAspectRatio));
+   label4->setPixmap(image4->scaled(JPG_WIDTH, JPG_HEIGHT, Qt::KeepAspectRatio));
    layout->addWidget(label4, 0, 3);
 
    QPixmap *image5 = new QPixmap(":/jpg/Tibouchina.jpg");  // in CVMresources.qrc
    QLabel *label5 = new QLabel;
    label5->setPixmap(*image5);
-   label5->setPixmap(image5->scaled(100,50,Qt::KeepAspectRatio));
+   label5->setPixmap(image5->scaled(JPG_WIDTH, JPG_HEIGHT, Qt::KeepAspectRatio));
    layout->addWidget(label5, 0, 4);
 
-   layout->setColumnStretch(1, 10);
-   layout->setColumnStretch(2, 20);
    gridGroupBox->setLayout(layout);
 }
 
@@ -262,4 +287,25 @@ void MainWindow::button9()
 void MainWindow::buttonokay()
 {
    pStateMachine->handleEvent(E_PRESSED_OKAY);
+}
+
+void MainWindow::buttonback()
+{
+   pStateMachine->handleEvent(E_PRESSED_BACK);
+}
+
+void MainWindow::buttonDisableDebug()
+{
+   if(debugDisplay->isEnabled()){
+      debugDisplay->setEnabled(false);
+   }
+   else{debugDisplay->setEnabled(true);}
+}
+
+void MainWindow::buttonHideDebug()
+{
+   if(debugDisplay->isHidden()){
+      debugDisplay->show();
+   }
+   else{debugDisplay->hide();}
 }
