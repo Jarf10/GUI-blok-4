@@ -124,9 +124,11 @@ void MainWindow::createHorizontalGroupBoxes()
    horizontalGroupBox1 = new QGroupBox(tr("IO"));
    inputGroupBox = new QGroupBox(tr("Input"));
    outputGroupBox = new QGroupBox(tr("Output"));
+   meterGroupBox = new QGroupBox(tr("Meters"));
    QHBoxLayout *layout_IO = new QHBoxLayout;
    QGridLayout *layout_input = new QGridLayout;
    QGridLayout *layout_output = new QGridLayout;
+   QVBoxLayout *layout_meters = new QVBoxLayout;
 
    buttons[0] = new QPushButton(tr("1"));
    layout_input->addWidget(buttons[0], 0, 0);
@@ -194,6 +196,26 @@ void MainWindow::createHorizontalGroupBoxes()
    layout_output->addWidget(textl2, 1, 1);
    led2->setColor(QColor(0,0,0));
 
+   manw = new ManoMeter(this);
+   QLabel *textm1 = new QLabel("Water switch");
+   textm1->setAlignment(Qt::AlignCenter);
+   manw->setMinimumSize((QSize(150,150)));
+   manw->setMaximum(100.0);
+   manw->setSuffix(" [%] ");
+   manw->setValue(0);
+   layout_meters->addWidget(textm1, 0);
+   layout_meters->addWidget(manw, 1);
+
+   manf = new ManoMeter(this);
+   QLabel *textm2 = new QLabel("Food switch");
+   textm2->setAlignment(Qt::AlignCenter);
+   manf->setMinimumSize((QSize(150,150)));
+   manf->setMaximum(100.0);
+   manf->setSuffix(" [%] ");
+   manf->setValue(0);
+   layout_meters->addWidget(textm2, 2);
+   layout_meters->addWidget(manf, 3);
+
    buttons[14] = new QPushButton(tr("Row detected"));
    buttons[14]->setStyleSheet("background-color: yellow;");
    layout_output->addWidget(buttons[14], 0, 3);
@@ -211,8 +233,10 @@ void MainWindow::createHorizontalGroupBoxes()
 
    inputGroupBox->setLayout(layout_input);
    outputGroupBox->setLayout(layout_output);
+   meterGroupBox->setLayout(layout_meters);
    layout_IO->addWidget(inputGroupBox);
    layout_IO->addWidget(outputGroupBox);
+   layout_IO->addWidget(meterGroupBox);
    horizontalGroupBox1->setLayout(layout_IO);
 
    // HorizontalGroupBox 2 -----------------------------------------------------
@@ -222,6 +246,7 @@ void MainWindow::createHorizontalGroupBoxes()
    logDisplay = new QTextEdit("Logging started", this);
    logDisplay->setOverwriteMode(false);
    logDisplay->setReadOnly(true);
+   logDisplay->setMinimumHeight(180);
    layout2->addWidget(logDisplay);
 
    debugDisplay = new QTextEdit("Debug log started", this);
@@ -380,4 +405,9 @@ void MainWindow::toggleLedback(Led *Led_tobetoggled)
       Led_tobetoggled->setColor(QColor(0,0,200));
    else
       Led_tobetoggled->setColor(QColor(0,0,0));
+}
+
+void MainWindow::setmanometer(ManoMeter *manometer, int i)
+{
+   manometer->setValue(i);
 }

@@ -8,7 +8,7 @@ typedef enum {NOERR} error_e;
 
 typedef enum {S_NO,
               S_START,
-              S_INITIALISED,
+              S_SHOWMENU,
               S_WAIT_FOR_INPUT,
               S_RUN_INITIALISE, S_RUN,
               S_DETECTED_0, S_DETECTED_1,
@@ -80,7 +80,7 @@ public:
    StateMachine(MainWindow* pDialog):
       pDialog(pDialog), pHardware(new Hardware(pDialog)),
       currentState(S_START), initialise(pDialog), newinitialise(pDialog),
-      firsttime(true), RowsCounted(0){}
+      firsttime(true), RowsCounted(0), insertednumbers(0), numberinserted(false){}
    ~StateMachine() {}
 
    void handleEvent(event_SM eventIn);
@@ -93,6 +93,7 @@ private:
    state_SM currentState;
    state_SM NextState;
    event_SM eventOut;
+   event_SM lasteventOut;
    event_SM statemachine(event_SM eventIn);
    SM_settings initialise;
    SM_settings newinitialise;

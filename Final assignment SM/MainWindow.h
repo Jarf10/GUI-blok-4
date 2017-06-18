@@ -43,6 +43,7 @@
 
 #include "StateMachine.h"
 #include "Led.h"
+#include "manometer.h"
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
@@ -73,6 +74,9 @@ public:
    Led *led1;
    Led *led2;
 
+   ManoMeter *manw;
+   ManoMeter *manf;
+
 private:
    void createMenu();
    void createHorizontalGroupBoxes();
@@ -89,6 +93,7 @@ private:
    QGroupBox *verticalGroupBox;
    QGroupBox *inputGroupBox;
    QGroupBox *outputGroupBox;
+   QGroupBox *meterGroupBox;
 
    QTextEdit *display;
    QTextEdit *logDisplay;
@@ -127,6 +132,7 @@ private slots:
 public slots:
    void toggleLed(Led *Led_tobetoggled);
    void toggleLedback(Led *Led_tobetoggled);
+   void setmanometer(ManoMeter *manometer, int i);
 };
 
 #endif // MAINWINDOW_H

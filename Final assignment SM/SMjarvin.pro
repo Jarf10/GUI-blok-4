@@ -18,14 +18,20 @@ SOURCES += \
     sm_settings.cpp \
     subsystems_sm.cpp \
     Led.cpp \
-    Widgetwithbackground.cpp
+    Widgetwithbackground.cpp \
+    abstractmeter.cpp \
+    functions.cpp \
+    manometer.cpp
 
 HEADERS += \
     MainWindow.h \
     StateMachine.h \
     AppInfo.h \
     Led.h \
-    Widgetwithbackground.h
+    Widgetwithbackground.h \
+    manometer.h \
+    abstractmeter.h \
+    functions.h
 
 FORMS +=
 

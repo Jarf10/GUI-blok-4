@@ -11,8 +11,14 @@ void StateMachine::handleEvent(event_SM eventIn) {
       eventIn = statemachine(eventIn);
 
       if(eventIn == E_PRESSED_BACK){
-         currentState = LastState;
-         eventIn = E_NO;
+         if(LastState==S_WAIT_FOR_INPUT){
+            eventOut = E_SEQ;
+            currentState = S_SHOWMENU;
+         }
+         else{
+            eventIn = lasteventOut;
+            currentState = LastState;
+         }
       }
    }
 }
@@ -29,11 +35,9 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          pHardware->SMinitialise();
          pDialog->enableButtons(true);
          initialise.print_values();
-         insertednumbers = 0;
-         numberinserted = false;
-         NextState = S_INITIALISED;
+         NextState = S_SHOWMENU;
          break;
-      case S_INITIALISED:
+      case S_SHOWMENU:
          //the start menu will wait for input when it is selected
          pHardware->DSP_ShowInfo("Make a selection:");
          pHardware->StartMenu();
@@ -62,12 +66,12 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             case E_PRESSED_2:
                initialise.print_values();
                eventOut = E_SEQ;
-               NextState = S_INITIALISED;
+               NextState = S_SHOWMENU;
                break;
             default:
                pHardware->DSP_ShowDebug("Error in waiting for input state");
                eventOut = E_SEQ;
-               NextState = S_INITIALISED;
+               NextState = S_SHOWMENU;
                break;
          }
       }
@@ -198,7 +202,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             numberinserted = false;
             insertednumbers = 0;
             eventOut = E_SEQ;
-            NextState = S_INITIALISED;
+            NextState = S_SHOWMENU;
          }
          break;
       }
@@ -215,7 +219,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             numberinserted = false;
             insertednumbers = 0;
             eventOut = E_SEQ;
-            NextState = S_INITIALISED;
+            NextState = S_SHOWMENU;
          }
          break;
       }
@@ -232,7 +236,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             numberinserted = false;
             insertednumbers = 0;
             eventOut = E_SEQ;
-            NextState = S_INITIALISED;
+            NextState = S_SHOWMENU;
          }
          break;
       }
@@ -249,14 +253,14 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             numberinserted = false;
             insertednumbers = 0;
             eventOut = E_SEQ;
-            NextState = S_INITIALISED;
+            NextState = S_SHOWMENU;
          }
          break;
       }
       case S_DETECTED_1_5:
          initialise.print_values();
          eventOut = E_SEQ;
-         NextState = S_INITIALISED;
+         NextState = S_SHOWMENU;
          break;
          //--------------------------From here the running state is described----------------------------------------------------
       case S_RUN_INITIALISE:
@@ -289,8 +293,10 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                sprintf(info, "Motor2 running with PWM %d\n", initialise.get_s());
                pHardware->DSP_ShowInfo(info);
                eventOut = E_SPRINKLER_ON;
+               pDialog->setmanometer(pDialog->manw, initialise.get_w());
                sprintf(info, "Watersprinkler is %d%% open\n", initialise.get_w());
                pHardware->DSP_ShowInfo(info);
+               pDialog->setmanometer(pDialog->manf, initialise.get_f());
                sprintf(info, "Foodsprinkler is %d%% open\n\n", initialise.get_f());
                pHardware->DSP_ShowInfo(info);
                eventOut = E_NO;
@@ -308,6 +314,8 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                NextState = S_RUN;
                break;
             case E_BACKWALL_DETECTED:
+               pDialog->setmanometer(pDialog->manw, 0);
+               pDialog->setmanometer(pDialog->manf, 0);
                eventOut = E_MOTOR2_STOP;
                pDialog->toggleLedback(pDialog->led2);
                pHardware->DSP_ShowInfo("Motor2 stopped\n");
@@ -358,7 +366,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                pDialog->toggleLedback(pDialog->led1);
                pHardware->DSP_ShowInfo("Motor1 stopped\n\n");
                eventOut = E_SEQ;
-               NextState = S_INITIALISED;
+               NextState = S_SHOWMENU;
             }
             else
             {
@@ -395,7 +403,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                   break;
                case E_PRESSED_1:
                   eventOut = E_SEQ;
-                  NextState = S_INITIALISED;
+                  NextState = S_SHOWMENU;
                   break;
                default:
                   pHardware->DSP_ShowDebug("Invalid choice");
@@ -439,29 +447,31 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                insertednumbers = insertednumbers*10+9;
                break;
             case E_PRESSED_OKAY:
+               pDialog->setLogger("\n");
                numberinserted = true;
                NextState = LastState;
-               //LastState = S_INSERT_NUMBERS;
                break;
          }
          eventOut = E_SEQ;
          if(NextState != LastState){
             std::stringstream buffer;
-            buffer << "--info current number: " << insertednumbers;
+            buffer << "--info current number: " << insertednumbers ;
             pDialog->setLogger(QString(buffer.str().c_str()));
+            pDialog->setLogger("When you are statisfied press OKAY");
             eventOut = E_NO;
             NextState = S_INSERT_NUMBERS;
          }
          break;
       default:
-         pHardware->DSP_ShowDebug("unknown state you will be redirected to S_WAIT_FOR_INPUT");
-         eventOut = E_NO;
-         NextState = S_WAIT_FOR_INPUT;
+         pHardware->DSP_ShowDebug("unknown state you will be redirected to S_SHOWMENU");
+         eventOut = E_SEQ;
+         NextState = S_SHOWMENU;
          break;
    }
    if (currentState != S_INSERT_NUMBERS){
       LastState = currentState;
    }
    currentState = NextState;
+   lasteventOut = eventOut;
    return eventOut;
 }
