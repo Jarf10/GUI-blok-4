@@ -121,60 +121,99 @@ void MainWindow::createVerticalGroupBox(){
 void MainWindow::createHorizontalGroupBoxes()
 {
    // HorizontalGroupBox 1 -----------------------------------------------------
-   horizontalGroupBox1 = new QGroupBox(tr("Input"));
-   QGridLayout *layout1 = new QGridLayout;
+   horizontalGroupBox1 = new QGroupBox(tr("IO"));
+   inputGroupBox = new QGroupBox(tr("Input"));
+   outputGroupBox = new QGroupBox(tr("Output"));
+   QHBoxLayout *layout_IO = new QHBoxLayout;
+   QGridLayout *layout_input = new QGridLayout;
+   QGridLayout *layout_output = new QGridLayout;
 
    buttons[0] = new QPushButton(tr("1"));
-   layout1->addWidget(buttons[0], 0, 0);
+   layout_input->addWidget(buttons[0], 0, 0);
    connect(buttons[0], SIGNAL(released()), this, SLOT(button1()));
 
    buttons[1] = new QPushButton(tr("2"));
-   layout1->addWidget(buttons[1], 0, 1);
+   layout_input->addWidget(buttons[1], 0, 1);
    connect(buttons[1], SIGNAL(released()), this, SLOT(button2()));
 
    buttons[2] = new QPushButton(tr("3"));
-   layout1->addWidget(buttons[2], 0 , 2);
+   layout_input->addWidget(buttons[2], 0 , 2);
    connect(buttons[2], SIGNAL(released()), this, SLOT(button3()));
 
    buttons[3] = new QPushButton(tr("4"));
-   layout1->addWidget(buttons[3]);
+   layout_input->addWidget(buttons[3]);
    connect(buttons[3], SIGNAL(released()), this, SLOT(button4()));
 
    buttons[4] = new QPushButton(tr("5"));
-   layout1->addWidget(buttons[4]);
+   layout_input->addWidget(buttons[4]);
    connect(buttons[4], SIGNAL(released()), this, SLOT(button5()));
 
    buttons[5] = new QPushButton(tr("6"));
-   layout1->addWidget(buttons[5]);
+   layout_input->addWidget(buttons[5]);
    connect(buttons[5], SIGNAL(released()), this, SLOT(button6()));
 
    buttons[6] = new QPushButton(tr("7"));
-   layout1->addWidget(buttons[6]);
+   layout_input->addWidget(buttons[6]);
    connect(buttons[6], SIGNAL(released()), this, SLOT(button7()));
 
    buttons[7] = new QPushButton(tr("8"));
-   layout1->addWidget(buttons[7]);
+   layout_input->addWidget(buttons[7]);
    connect(buttons[7], SIGNAL(released()), this, SLOT(button8()));
 
    buttons[8] = new QPushButton(tr("9"));
-   layout1->addWidget(buttons[8]);
+   layout_input->addWidget(buttons[8]);
    connect(buttons[8], SIGNAL(released()), this, SLOT(button9()));
 
    buttons[9] = new QPushButton(tr("0"));
-   layout1->addWidget(buttons[9], 4, 1);
+   layout_input->addWidget(buttons[9], 4, 1);
    connect(buttons[9], SIGNAL(released()), this, SLOT(button0()));
 
    buttons[10] = new QPushButton(tr("OKAY"));
    buttons[10]->setStyleSheet("background-color: green;");
-   layout1->addWidget(buttons[10]);
+   layout_input->addWidget(buttons[10]);
    connect(buttons[10], SIGNAL(released()), this, SLOT(buttonokay()));
 
    buttons[11] = new QPushButton(tr("BACK"));
    buttons[11]->setStyleSheet("background-color: red;");
-   layout1->addWidget(buttons[11], 4, 0);
+   layout_input->addWidget(buttons[11], 4, 0);
    connect(buttons[11], SIGNAL(released()), this, SLOT(buttonback()));
 
-   horizontalGroupBox1->setLayout(layout1);
+   led1 = new Led(this);
+   QLabel *textl1 = new QLabel("Motor1");
+   textl1->setAlignment(Qt::AlignCenter);
+
+   layout_output->addWidget(led1, 0, 0);
+   layout_output->addWidget(textl1, 1, 0);
+   led1->setColor(QColor(0 , 0, 0));
+
+   led2 = new Led(this);
+   QLabel *textl2 = new QLabel("Motor2");
+   textl2->setAlignment(Qt::AlignCenter);
+
+   layout_output->addWidget(led2, 0, 1);
+   layout_output->addWidget(textl2, 1, 1);
+   led2->setColor(QColor(0,0,0));
+
+   buttons[14] = new QPushButton(tr("Row detected"));
+   buttons[14]->setStyleSheet("background-color: yellow;");
+   layout_output->addWidget(buttons[14], 0, 3);
+   connect(buttons[14], SIGNAL(released()), this, SLOT(buttonRowDetected()));
+
+   buttons[15] = new QPushButton(tr("Wall Detected"));
+   buttons[15]->setStyleSheet("background-color: yellow;");
+   layout_output->addWidget(buttons[15], 1, 3);
+   connect(buttons[15], SIGNAL(released()), this, SLOT(buttonWallDetected()));
+
+   buttons[16] = new QPushButton(tr("Back wall Detected"));
+   buttons[16]->setStyleSheet("background-color: yellow;");
+   layout_output->addWidget(buttons[16], 2, 3);
+   connect(buttons[16], SIGNAL(released()), this, SLOT(buttonBackWallDetected()));
+
+   inputGroupBox->setLayout(layout_input);
+   outputGroupBox->setLayout(layout_output);
+   layout_IO->addWidget(inputGroupBox);
+   layout_IO->addWidget(outputGroupBox);
+   horizontalGroupBox1->setLayout(layout_IO);
 
    // HorizontalGroupBox 2 -----------------------------------------------------
    horizontalGroupBox2 = new QGroupBox(tr("Screen"));
@@ -308,4 +347,37 @@ void MainWindow::buttonHideDebug()
       debugDisplay->show();
    }
    else{debugDisplay->hide();}
+}
+
+void MainWindow::buttonRowDetected()
+{
+   pStateMachine->handleEvent(E_ROW_DETECTED);
+}
+
+void MainWindow::buttonWallDetected()
+{
+   pStateMachine->handleEvent(E_WALL_DETECTED);
+}
+
+void MainWindow::buttonBackWallDetected()
+{
+   pStateMachine->handleEvent(E_BACKWALL_DETECTED);
+}
+
+void MainWindow::toggleLed(Led *Led_tobetoggled)
+{
+   QColor currentcollor = Led_tobetoggled->color();
+   if(currentcollor == (QColor(0, 0, 0)))
+      Led_tobetoggled->setColor(QColor(0,200,0));
+   else
+      Led_tobetoggled->setColor(QColor(0,0,0));
+}
+
+void MainWindow::toggleLedback(Led *Led_tobetoggled)
+{
+   QColor currentcollor = Led_tobetoggled->color();
+   if(currentcollor == (QColor(0, 0, 0)))
+      Led_tobetoggled->setColor(QColor(0,0,200));
+   else
+      Led_tobetoggled->setColor(QColor(0,0,0));
 }

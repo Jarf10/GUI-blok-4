@@ -42,6 +42,7 @@
 #define MAINWINDOW_H
 
 #include "StateMachine.h"
+#include "Led.h"
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
@@ -68,6 +69,10 @@ public:
    void setLogger(const QString& text);
    void setDebugLogger(const QString& text);
 
+
+   Led *led1;
+   Led *led2;
+
 private:
    void createMenu();
    void createHorizontalGroupBoxes();
@@ -75,13 +80,15 @@ private:
    void createGridGroupBox();
    void createFormGroupBox();
 
-   enum { NumGridRows = 3, NumButtons = 14};
+   enum { NumGridRows = 3, NumButtons = 17};
 
    QMenuBar *menuBar;
    QGroupBox *horizontalGroupBox1;
    QGroupBox *horizontalGroupBox2;
    QGroupBox *gridGroupBox;
    QGroupBox *verticalGroupBox;
+   QGroupBox *inputGroupBox;
+   QGroupBox *outputGroupBox;
 
    QTextEdit *display;
    QTextEdit *logDisplay;
@@ -113,6 +120,13 @@ private slots:
    void buttonback();
    void buttonDisableDebug();
    void buttonHideDebug();
+   void buttonRowDetected();
+   void buttonWallDetected();
+   void buttonBackWallDetected();
+
+public slots:
+   void toggleLed(Led *Led_tobetoggled);
+   void toggleLedback(Led *Led_tobetoggled);
 };
 
 #endif // MAINWINDOW_H

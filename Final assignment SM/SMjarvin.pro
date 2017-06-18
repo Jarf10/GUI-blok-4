@@ -16,12 +16,16 @@ SOURCES += \
     MainWindow.cpp \
     StateMachine.cpp \
     sm_settings.cpp \
-    subsystems_sm.cpp
+    subsystems_sm.cpp \
+    Led.cpp \
+    Widgetwithbackground.cpp
 
 HEADERS += \
     MainWindow.h \
     StateMachine.h \
-    AppInfo.h
+    AppInfo.h \
+    Led.h \
+    Widgetwithbackground.h
 
 FORMS +=
 

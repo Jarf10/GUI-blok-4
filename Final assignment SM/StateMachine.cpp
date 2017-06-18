@@ -271,8 +271,9 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
             pHardware->DSP_ShowInfo("Running with following settings:");
             initialise.print_values();
             eventOut = E_MOTOR1_RUN_FORWARDS;
+            pDialog->toggleLed(pDialog->led1);
             pHardware->DSP_ShowInfo("Motor 1 is running forwards");
-            eventOut = E_ROW_DETECTED;
+            eventOut = E_NO;
             NextState = S_RUN;
          }
          break;
@@ -284,6 +285,7 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                NextState = S_DETECTED_ROW;
                break;
             case E_MOTOR2_RUN_FORWARDS:
+               pDialog->toggleLed(pDialog->led2);
                sprintf(info, "Motor2 running with PWM %d\n", initialise.get_s());
                pHardware->DSP_ShowInfo(info);
                eventOut = E_SPRINKLER_ON;
@@ -291,23 +293,29 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
                pHardware->DSP_ShowInfo(info);
                sprintf(info, "Foodsprinkler is %d%% open\n\n", initialise.get_f());
                pHardware->DSP_ShowInfo(info);
-               eventOut = E_WALL_DETECTED;
+               eventOut = E_NO;
                NextState = S_RUN;
                break;
             case E_WALL_DETECTED:
                pHardware->DSP_ShowInfo("Wall detected\n");
                eventOut = E_MOTOR2_STOP;
+               pDialog->toggleLed(pDialog->led2);
                pHardware->DSP_ShowInfo("Motor2 stopped\n");
                eventOut = E_MOTOR2_RUN_BACKWARDS;
+               pDialog->toggleLedback(pDialog->led2);
                pHardware->DSP_ShowInfo("Motor2 going backwards\n");
+               eventOut = E_NO;
+               NextState = S_RUN;
+               break;
+            case E_BACKWALL_DETECTED:
                eventOut = E_MOTOR2_STOP;
+               pDialog->toggleLedback(pDialog->led2);
                pHardware->DSP_ShowInfo("Motor2 stopped\n");
                eventOut = E_MOTOR1_RUN_BACKWARDS;
+               pDialog->toggleLedback(pDialog->led1);
                pHardware->DSP_ShowInfo("Motor1 running backwards\n");
-               eventOut = E_MOTOR1_STOP;
-               pHardware->DSP_ShowInfo("Motor1 stopped\n\n");
-               eventOut = E_SEQ;
-               NextState = S_INITIALISED;
+               eventOut = E_NO;
+               NextState = S_DETECTED_ROW;
                break;
             default:
                pHardware->DSP_ShowDebug("Error in S_RUN");
@@ -315,30 +323,50 @@ event_SM StateMachine::statemachine(event_SM eventIn) {
          }
          break;
       case S_DETECTED_ROW:
-         if(RowsCounted < initialise.get_r())
+         if((RowsCounted < initialise.get_r())&&(pDialog->led1->color() == (QColor(0, 200, 0))))
          {
             RowsCounted++;
             if(RowsCounted == initialise.get_r())
             {
                sprintf(info, "Row %d detected\n", RowsCounted);
                pHardware->DSP_ShowInfo(info);
+
+               eventOut = E_MOTOR1_STOP;
+               sprintf(info, "Motor1 stopped\n");
+               pDialog->toggleLed(pDialog->led1);
+               pHardware->DSP_ShowInfo(info);
+               //RowsCounted = 0;
+               eventOut = E_MOTOR2_RUN_FORWARDS;
             }
             else
             {
                sprintf(info, "Row %d detected", RowsCounted);
                pHardware->DSP_ShowInfo(info);
+               eventOut = E_NO;
             }
-            eventOut = E_ROW_DETECTED;
+
             NextState = S_RUN;
          }
-         else if(RowsCounted == initialise.get_r())
+         else if(RowsCounted > 0)
          {
-            eventOut = E_MOTOR1_STOP;
-            sprintf(info, "Motor1 stopped\n");
-            pHardware->DSP_ShowInfo(info);
-            RowsCounted = 0;
-            eventOut = E_MOTOR2_RUN_FORWARDS;
-            NextState = S_RUN;
+            RowsCounted--;
+            if(RowsCounted == 0)
+            {
+               sprintf(info, "Row %d detected\n", RowsCounted);
+               pHardware->DSP_ShowInfo(info);
+               eventOut = E_MOTOR1_STOP;
+               pDialog->toggleLedback(pDialog->led1);
+               pHardware->DSP_ShowInfo("Motor1 stopped\n\n");
+               eventOut = E_SEQ;
+               NextState = S_INITIALISED;
+            }
+            else
+            {
+               sprintf(info, "Row %d detected", RowsCounted);
+               pHardware->DSP_ShowInfo(info);
+               eventOut = E_NO;
+               NextState = S_RUN;
+            }
          }
          else
          {
